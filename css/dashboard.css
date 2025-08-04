@@ -1,106 +1,147 @@
-/* Dashboard Specific Styles */
-.dashboard {
+/* Header Styles */
+.nero-header {
+    background-color: var(--nero-dark);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo {
+    height: 40px;
+    width: auto;
+}
+
+.logo-container h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.ai-text {
+    color: var(--primary-light);
+}
+
+nav ul {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+}
+
+nav a {
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+nav a.active {
+    background-color: var(--primary-color);
+}
+
+nav a:hover:not(.active) {
+    background-color: var(--nero-light);
+}
+
+/* Main Content Styles */
+.dashboard-container {
+    flex: 1;
     padding: 2rem;
-    max-width: 1400px;
-    margin: 0 auto;
     display: flex;
     flex-direction: column;
     gap: 2rem;
 }
 
-/* AI Assistant Section */
 .ai-assistant {
-    background: var(--nero-card);
-    border-radius: 12px;
+    background-color: var(--nero-dark);
+    border-radius: 8px;
     padding: 1.5rem;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
-.ai-assistant h2 {
-    margin-top: 0;
-    margin-bottom: 1.5rem;
-    color: var(--ai-blue);
-    font-size: 1.8rem;
-}
-
-.chat-container {
+.chat-window {
     display: flex;
     flex-direction: column;
-    height: 500px;
-    border: 1px solid var(--nero-border);
-    border-radius: 8px;
-    overflow: hidden;
+    height: 60vh;
 }
 
 .chat-history {
     flex: 1;
-    padding: 1.5rem;
     overflow-y: auto;
-    background: var(--nero-bg);
-}
-
-.welcome-message {
-    text-align: center;
-    padding: 2rem;
-}
-
-.welcome-message h3 {
-    font-size: 1.8rem;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
     margin-bottom: 1rem;
-    color: var(--ai-blue);
+    border-bottom: 1px solid var(--nero-accent);
 }
 
-.welcome-message p {
-    font-size: 1.1rem;
-    margin-bottom: 2rem;
-    color: var(--nero-text);
-    opacity: 0.9;
-}
-
-.quick-prompts {
+.ai-message, .user-message {
     display: flex;
     gap: 1rem;
-    justify-content: center;
-    flex-wrap: wrap;
+    max-width: 80%;
 }
 
-.prompt-btn {
-    background: var(--nero-accent);
-    border: 1px solid var(--nero-border);
-    color: var(--nero-text);
-    padding: 0.6rem 1.2rem;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: all 0.3s ease;
+.ai-message {
+    align-self: flex-start;
 }
 
-.prompt-btn:hover {
-    background: var(--ai-blue);
-    color: white;
-    border-color: var(--ai-blue);
+.user-message {
+    align-self: flex-end;
+    flex-direction: row-reverse;
+}
+
+.ai-message img, .user-message img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.ai-message p, .user-message p {
+    padding: 0.8rem 1.2rem;
+    border-radius: 18px;
+    line-height: 1.5;
+}
+
+.ai-message p {
+    background-color: var(--nero-light);
+    border-top-left-radius: 4px;
+}
+
+.user-message p {
+    background-color: var(--primary-color);
+    border-top-right-radius: 4px;
 }
 
 .input-area {
     display: flex;
-    padding: 1rem;
-    background: var(--nero-card);
-    border-top: 1px solid var(--nero-border);
+    gap: 0.5rem;
+    align-items: center;
 }
 
-.input-area input {
+.input-area textarea {
     flex: 1;
-    padding: 0.8rem 1.2rem;
-    border: 1px solid var(--nero-border);
-    border-radius: 6px;
-    background: var(--nero-accent);
-    color: var(--nero-text);
-    font-size: 1rem;
+    height: 50px;
+    padding: 0.8rem 1rem;
 }
 
 .input-area button {
-    margin-left: 0.5rem;
-    padding: 0 1.5rem;
-    border-radius: 6px;
+    background-color: var(--primary-color);
+    padding: 0.8rem;
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+}
+
+.input-area button:hover {
+    background-color: var(--primary-light);
 }
 
 .input-area button img {
@@ -108,156 +149,119 @@
     height: 20px;
 }
 
-/* Generator Section */
-.generator-section h2 {
-    color: var(--ai-purple);
-    font-size: 1.8rem;
+/* Quick Actions Styles */
+.quick-actions h2 {
     margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    color: var(--text-secondary);
 }
 
-.generator-grid {
+.action-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 1.5rem;
 }
 
-.generator-card {
-    background: var(--nero-card);
-    border-radius: 12px;
+.action-card {
+    background-color: var(--nero-dark);
+    border-radius: 8px;
     padding: 1.5rem;
-    transition: all 0.3s ease;
-    border: 1px solid var(--nero-border);
-    color: var(--nero-text);
-    text-decoration: none;
     display: flex;
     flex-direction: column;
+    gap: 1rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
 }
 
-.generator-card:hover {
+.action-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-    border-color: var(--ai-blue);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
-.card-icon {
-    background: rgba(74, 144, 226, 0.1);
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 1.5rem;
+.action-card img {
+    width: 50px;
+    height: 50px;
+    padding: 0.5rem;
+    background-color: var(--nero-light);
+    border-radius: 12px;
 }
 
-.card-icon img {
-    width: 30px;
-    height: 30px;
+.action-card h3 {
+    font-size: 1.2rem;
+    color: var(--primary-light);
 }
 
-.generator-card h3 {
-    font-size: 1.3rem;
-    margin: 0 0 0.5rem 0;
-    color: var(--nero-text);
+.action-card p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    line-height: 1.5;
 }
 
-.generator-card p {
-    margin: 0 0 1.5rem 0;
-    opacity: 0.8;
-    font-size: 0.95rem;
-}
-
-.recent-history {
-    margin-top: auto;
-    padding-top: 1rem;
-    border-top: 1px solid var(--nero-border);
-    font-size: 0.85rem;
-    opacity: 0.7;
-}
-
-/* Footer */
-footer {
-    background: var(--nero-card);
+/* Footer Styles */
+.site-footer {
+    background-color: var(--nero-dark);
     padding: 2rem;
-    margin-top: 3rem;
-    border-top: 1px solid var(--nero-border);
+    margin-top: auto;
 }
 
 .footer-content {
-    max-width: 1200px;
-    margin: 0 auto;
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
     align-items: center;
-    gap: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.footer-logo img {
+    height: 30px;
 }
 
 .footer-links {
     display: flex;
-    gap: 2rem;
+    gap: 1.5rem;
 }
 
-.footer-links a {
-    color: var(--nero-text);
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-
-.footer-links a:hover {
-    color: var(--ai-blue);
-}
-
-.social-links {
-    display: flex;
-    gap: 1rem;
-}
-
-.social-links img {
-    width: 24px;
-    height: 24px;
-    opacity: 0.7;
-    transition: opacity 0.3s ease;
-}
-
-.social-links img:hover {
-    opacity: 1;
-}
-
-footer p {
-    margin: 0;
+.copyright {
+    text-align: center;
+    color: var(--text-muted);
     font-size: 0.9rem;
-    opacity: 0.6;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .dashboard {
+    .nero-header {
+        flex-direction: column;
+        gap: 1rem;
         padding: 1rem;
     }
     
-    .chat-container {
-        height: 400px;
+    nav ul {
+        gap: 0.5rem;
     }
     
-    .generator-grid {
+    .dashboard-container {
+        padding: 1rem;
+    }
+    
+    .action-grid {
         grid-template-columns: 1fr;
+    }
+    
+    .footer-content {
+        flex-direction: column;
+        gap: 1rem;
     }
     
     .footer-links {
         flex-direction: column;
         gap: 0.5rem;
-        text-align: center;
-    }
-}
-
-@media (max-width: 480px) {
-    .input-area {
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-    
-    .input-area button {
-        margin-left: 0;
-        width: 100%;
+        align-items: center;
     }
 }
