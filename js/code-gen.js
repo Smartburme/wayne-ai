@@ -1,145 +1,221 @@
-// Code Generation Logic
+// Enhanced Code Generation with Multi-API Support
 document.addEventListener('DOMContentLoaded', function() {
-    const generateButton = document.getElementById('generateCodeButton');
-    const explainButton = document.getElementById('explainCodeButton');
-    const codePrompt = document.getElementById('codePrompt');
-    const codeLanguage = document.getElementById('codeLanguage');
+    const generateBtn = document.getElementById('generateCodeButton');
+    const explainBtn = document.getElementById('explainCodeButton');
+    const promptInput = document.getElementById('codePrompt');
+    const languageSelect = document.getElementById('codeLanguage');
     const codeOutput = document.getElementById('codeOutput');
-    const codeExplanation = document.getElementById('codeExplanation');
-    
-    if (generateButton) {
-        generateButton.addEventListener('click', generateCode);
+    const explanationOutput = document.getElementById('codeExplanation');
+    const historyList = document.getElementById('codeHistoryList');
+    const modelSelector = document.getElementById('codeModelSelector');
+
+    // Initialize model selector
+    function initModelSelector() {
+        const status = ai.getApiStatus();
+        
+        if (status.openai.enabled) {
+            modelSelector.innerHTML += `
+                <div class="model-option active" data-model="openai">
+                    <div class="model-name">GPT-4</div>
+                    <div class="model-status">OpenAI</div>
+                </div>
+            `;
+        }
+        
+        if (status.gemini.enabled) {
+            modelSelector.innerHTML += `
+                <div class="model-option" data-model="gemini">
+                    <div class="model-name">Gemini Pro</div>
+                    <div class="model-status">Google</div>
+                </div>
+            `;
+        }
+
+        // Set first available model as active
+        const firstModel = document.querySelector('.model-option');
+        if (firstModel) {
+            firstModel.classList.add('active');
+        }
     }
-    
-    if (explainButton) {
-        explainButton.addEventListener('click', explainCode);
-    }
-    
+
+    // Handle model selection
+    modelSelector.addEventListener('click', function(e) {
+        const modelOption = e.target.closest('.model-option');
+        if (modelOption) {
+            document.querySelectorAll('.model-option').forEach(opt => {
+                opt.classList.remove('active');
+            });
+            modelOption.classList.add('active');
+        }
+    });
+
+    // Generate code
     async function generateCode() {
-        const prompt = codePrompt.value.trim();
-        const language = codeLanguage.value;
+        const prompt = promptInput.value.trim();
+        const language = languageSelect.value;
         
         if (!prompt) {
             alert('Please enter a code description');
             return;
         }
-        
+
+        const selectedModel = document.querySelector('.model-option.active');
+        if (!selectedModel) {
+            alert('No AI model selected');
+            return;
+        }
+
         try {
-            generateButton.disabled = true;
-            generateButton.textContent = 'Generating...';
-            
-            // In a real implementation, this would call the Gemini API
-            // const generatedCode = await gemini.generateCode(prompt, language);
-            // For now, we'll simulate it
-            await new Promise(resolve => setTimeout(resolve, 1500));
-            
-            // Simulated response
-            const generatedCode = `// ${prompt}\nfunction ${prompt.toLowerCase().replace(/\s+/g, '_')}() {\n  // Implementation goes here\n  return "Hello, World!";\n}`;
-            
-            // Display the code
-            codeOutput.textContent = generatedCode;
-            
+            // Update UI
+            generateBtn.disabled = true;
+            generateBtn.innerHTML = '<div class="loading-spinner"></div> Generating...';
+            codeOutput.textContent = '// Generating code...';
+
+            // Generate code
+            const code = await ai.generateCode(prompt, language, {
+                model: selectedModel.dataset.model === 'openai' ? 'gpt-4' : undefined,
+                temperature: 0.2
+            });
+
+            // Display result
+            codeOutput.textContent = code;
+            explanationOutput.textContent = '';
+
             // Save to history
-            saveCodeToHistory(prompt, generatedCode, language, null);
-            
+            saveToHistory({
+                prompt,
+                language,
+                code,
+                explanation: '',
+                model: selectedModel.dataset.model,
+                timestamp: new Date().toISOString()
+            });
+
         } catch (error) {
-            console.error('Error generating code:', error);
-            alert('Failed to generate code. Please try again.');
+            console.error('Code generation failed:', error);
+            codeOutput.textContent = `// Error: ${error.message}`;
         } finally {
-            generateButton.disabled = false;
-            generateButton.textContent = 'Generate';
+            generateBtn.disabled = false;
+            generateBtn.textContent = 'Generate Code';
         }
     }
-    
+
+    // Explain code
     async function explainCode() {
         const code = codeOutput.textContent.trim();
+        const language = languageSelect.value;
         
-        if (!code) {
+        if (!code || code.startsWith('//')) {
             alert('Please generate some code first');
             return;
         }
-        
+
+        const selectedModel = document.querySelector('.model-option.active');
+        if (!selectedModel) {
+            alert('No AI model selected');
+            return;
+        }
+
         try {
-            explainButton.disabled = true;
-            explainButton.textContent = 'Explaining...';
-            
-            // In a real implementation, this would call the Gemini API
-            // const explanation = await gemini.chat(`Explain this ${codeLanguage.value} code:\n${code}`);
-            // For now, we'll simulate it
-            await new Promise(resolve => setTimeout(resolve, 1500));
-            
-            // Simulated response
-            const explanation = "This code appears to be a function that returns 'Hello, World!'. It takes the prompt you provided and converts it to a function name by replacing spaces with underscores and making it lowercase.";
-            
-            // Display the explanation
-            codeExplanation.textContent = explanation;
-            
-            // Save to history
-            const prompt = codePrompt.value.trim();
-            const language = codeLanguage.value;
-            saveCodeToHistory(prompt, code, language, explanation);
-            
+            // Update UI
+            explainBtn.disabled = true;
+            explainBtn.innerHTML = '<div class="loading-spinner"></div> Explaining...';
+            explanationOutput.textContent = 'Generating explanation...';
+
+            // Get explanation
+            const explanation = await ai.explainCode(code, language, {
+                model: selectedModel.dataset.model === 'openai' ? 'gpt-4' : undefined,
+                temperature: 0.3
+            });
+
+            // Display explanation
+            explanationOutput.textContent = explanation;
+
+            // Update history
+            updateHistoryWithExplanation(code, explanation);
+
         } catch (error) {
-            console.error('Error explaining code:', error);
-            alert('Failed to explain code. Please try again.');
+            console.error('Code explanation failed:', error);
+            explanationOutput.textContent = `Error: ${error.message}`;
         } finally {
-            explainButton.disabled = false;
-            explainButton.textContent = 'Explain';
+            explainBtn.disabled = false;
+            explainBtn.textContent = 'Explain Code';
         }
     }
-    
-    function saveCodeToHistory(prompt, code, language, explanation) {
-        const historyItem = {
-            prompt,
-            code,
-            language,
-            explanation,
-            timestamp: new Date().toISOString()
-        };
-        
-        // Get existing history
-        let history = loadFromLocalStorage('codeHistory') || [];
-        
-        // Add new item
-        history.unshift(historyItem);
-        
-        // Save (limit to 50 items)
-        saveToLocalStorage('codeHistory', history.slice(0, 50));
-        
-        // Update history display
-        updateCodeHistoryDisplay();
+
+    // Save to history
+    function saveToHistory(item) {
+        let history = JSON.parse(localStorage.getItem('wayne-ai_codeHistory') || '[]');
+        history.unshift(item);
+        localStorage.setItem('wayne-ai_codeHistory', JSON.stringify(history.slice(0, 50)));
+        updateHistoryDisplay();
     }
-    
-    function updateCodeHistoryDisplay() {
-        const historyList = document.getElementById('codeHistoryList');
-        if (!historyList) return;
-        
-        const history = loadFromLocalStorage('codeHistory') || [];
-        
+
+    // Update history with explanation
+    function updateHistoryWithExplanation(code, explanation) {
+        let history = JSON.parse(localStorage.getItem('wayne-ai_codeHistory') || '[]');
+        const index = history.findIndex(item => item.code === code);
+        if (index !== -1) {
+            history[index].explanation = explanation;
+            localStorage.setItem('wayne-ai_codeHistory', JSON.stringify(history));
+            updateHistoryDisplay();
+        }
+    }
+
+    // Update history display
+    function updateHistoryDisplay() {
+        const history = JSON.parse(localStorage.getItem('wayne-ai_codeHistory') || '[]');
         historyList.innerHTML = '';
         
-        history.forEach(item => {
-            const itemElement = document.createElement('div');
-            itemElement.classList.add('history-item');
-            itemElement.innerHTML = `
-                <p><strong>${item.prompt.substring(0, 50)}${item.prompt.length > 50 ? '...' : ''}</strong></p>
-                <small>${item.language} • ${new Date(item.timestamp).toLocaleString()}</small>
+        history.forEach((item, index) => {
+            const historyItem = document.createElement('div');
+            historyItem.className = 'history-item';
+            historyItem.innerHTML = `
+                <div class="details">
+                    <p><strong>${item.language}</strong>: ${item.prompt.substring(0, 50)}${item.prompt.length > 50 ? '...' : ''}</p>
+                    <small>${item.model} • ${new Date(item.timestamp).toLocaleString()}</small>
+                </div>
+                <button class="delete" data-index="${index}">×</button>
             `;
             
-            itemElement.addEventListener('click', () => {
-                // When clicked, show this code in the main area
+            historyItem.addEventListener('click', () => {
                 codeOutput.textContent = item.code;
-                codeExplanation.textContent = item.explanation || '';
+                explanationOutput.textContent = item.explanation || '';
+                promptInput.value = item.prompt;
+                languageSelect.value = item.language;
                 
-                // Update the inputs
-                codePrompt.value = item.prompt;
-                codeLanguage.value = item.language;
+                // Set the correct model
+                document.querySelectorAll('.model-option').forEach(opt => {
+                    opt.classList.remove('active');
+                    if (opt.dataset.model === item.model) {
+                        opt.classList.add('active');
+                    }
+                });
             });
             
-            historyList.appendChild(itemElement);
+            historyList.appendChild(historyItem);
+        });
+        
+        // Add delete handlers
+        document.querySelectorAll('.history-item .delete').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                deleteHistoryItem(parseInt(this.dataset.index));
+            });
         });
     }
-    
-    // Load history on page load
-    updateCodeHistoryDisplay();
+
+    // Delete history item
+    function deleteHistoryItem(index) {
+        let history = JSON.parse(localStorage.getItem('wayne-ai_codeHistory') || '[]');
+        history.splice(index, 1);
+        localStorage.setItem('wayne-ai_codeHistory', JSON.stringify(history));
+        updateHistoryDisplay();
+    }
+
+    // Initialize
+    initModelSelector();
+    updateHistoryDisplay();
+    generateBtn.addEventListener('click', generateCode);
+    explainBtn.addEventListener('click', explainCode);
 });
