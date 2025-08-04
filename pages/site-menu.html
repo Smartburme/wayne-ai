@@ -1,0 +1,75 @@
+<!-- pages/site-menu.html --><!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WAYNE AI - Generator Menu</title>
+  <link rel="icon" href="../assets/images/ai-logo.png" type="image/png">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    body {
+      margin: 0;
+      padding-bottom: 70px;
+      background: #101010;
+      color: #fff;
+      font-family: sans-serif;
+    }
+    .menu-header {
+      padding: 16px;
+      font-size: 1.2rem;
+      background: #111;
+      text-align: center;
+      border-bottom: 1px solid #222;
+    }
+    .menu-content {
+      padding: 20px;
+    }
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+      background: #1a1a1a;
+      border-top: 1px solid #333;
+      padding: 10px 0;
+    }
+    .bottom-nav a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.9rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .bottom-nav img {
+      width: 24px;
+      height: 24px;
+      margin-bottom: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="menu-header">Choose Generator Mode</div>
+  <div class="menu-content">
+    <p>Select a generator below to get started:</p>
+  </div>  <div class="bottom-nav">
+    <a href="main.html">
+      <img src="../assets/images/text-icon.png" alt="Text">
+      <span>Chat</span>
+    </a>
+    <a href="#">
+      <img src="../assets/images/image-icon.png" alt="Image">
+      <span>Image</span>
+    </a>
+    <a href="#">
+      <img src="../assets/images/code-icon.png" alt="Code">
+      <span>Code</span>
+    </a>
+    <a href="setting.html">
+      <img src="../assets/images/gen-icon.png" alt="Settings">
+      <span>Settings</span>
+    </a>
+  </div>
+</body>
+</html>
