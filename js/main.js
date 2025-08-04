@@ -1,8 +1,9 @@
-// Main application functionality
+// Enhanced Main Application Script
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize all pages
     initNavigation();
     initDarkModeToggle();
+    initAPIStatusDisplay();
     
     // Page-specific initializations
     if (document.querySelector('.dashboard')) {
@@ -15,16 +16,62 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function initNavigation() {
-    // Mobile menu toggle would go here
-    console.log('Navigation initialized');
+    // Mobile menu toggle
+    const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+    const navMenu = document.querySelector('nav ul');
+    
+    if (mobileMenuToggle && navMenu) {
+        mobileMenuToggle.addEventListener('click', function() {
+            navMenu.classList.toggle('active');
+            mobileMenuToggle.classList.toggle('active');
+        });
+    }
 }
 
 function initDarkModeToggle() {
     // Dark mode is default in Nero theme
-    console.log('Dark mode initialized');
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    
+    if (darkModeToggle) {
+        darkModeToggle.addEventListener('click', function() {
+            document.body.classList.toggle('nero-theme');
+            document.body.classList.toggle('light-theme');
+            
+            // Save preference
+            const isDark = document.body.classList.contains('nero-theme');
+            localStorage.setItem('wayne-ai_themePreference', isDark ? 'dark' : 'light');
+        });
+        
+        // Load saved preference
+        const savedTheme = localStorage.getItem('wayne-ai_themePreference') || 'dark';
+        if (savedTheme === 'light') {
+            document.body.classList.remove('nero-theme');
+            document.body.classList.add('light-theme');
+        }
+    }
+}
+
+function initAPIStatusDisplay() {
+    // Display API status in footer
+    const status = ai.getApiStatus();
+    const footer = document.querySelector('footer');
+    
+    if (footer) {
+        const statusElement = document.createElement('div');
+        statusElement.className = 'api-status';
+        
+        statusElement.innerHTML = `
+            <span class="${status.gemini.enabled ? 'active' : 'inactive'}">Gemini</span>
+            <span class="${status.openai.enabled ? 'active' : 'inactive'}">OpenAI</span>
+            <span class="${status.stability.enabled ? 'active' : 'inactive'}">Stability</span>
+        `;
+        
+        footer.prepend(statusElement);
+    }
 }
 
 function initDashboard() {
+    // Initialize main dashboard
     const chatInput = document.getElementById('userInput');
     const sendButton = document.getElementById('sendButton');
     
@@ -37,18 +84,29 @@ function initDashboard() {
         });
     }
     
-    console.log('Dashboard initialized');
+    // Initialize quick action cards
+    document.querySelectorAll('.generator-card').forEach(card => {
+        card.addEventListener('click', function(e) {
+            if (this.getAttribute('href') === '#') {
+                e.preventDefault();
+                alert('Please select an AI model first');
+            }
+        });
+    });
 }
 
 function initGenerationPage() {
     // Common generation page functionality
     console.log('Generation page initialized');
     
-    // Load history for the current page
-    loadHistory();
+    // Check if any APIs are available
+    const status = ai.getApiStatus();
+    if (!status.gemini.enabled && !status.openai.enabled && !status.stability.enabled) {
+        alert('Warning: No AI APIs are currently configured');
+    }
 }
 
-function sendMessage() {
+async function sendMessage() {
     const input = document.getElementById('userInput');
     const message = input.value.trim();
     
@@ -57,10 +115,16 @@ function sendMessage() {
         addMessageToChat('user', message);
         input.value = '';
         
-        // Simulate AI response
-        setTimeout(() => {
-            addMessageToChat('ai', "I'm Wayne-AI. How can I assist you further?");
-        }, 1000);
+        try {
+            // Get AI response
+            const response = await ai.chat(message);
+            
+            // Add AI response
+            addMessageToChat('ai', response.content);
+        } catch (error) {
+            console.error('Chat failed:', error);
+            addMessageToChat('ai', "I'm having trouble responding right now. Please try again later.");
+        }
     }
 }
 
@@ -74,11 +138,6 @@ function addMessageToChat(sender, text) {
     
     chatHistory.appendChild(messageDiv);
     chatHistory.scrollTop = chatHistory.scrollHeight;
-}
-
-function loadHistory() {
-    // This would load from localStorage
-    console.log('Loading history for current page');
 }
 
 // Utility function to save to localStorage
@@ -102,3 +161,6 @@ function loadFromLocalStorage(key) {
         return null;
     }
 }
+
+// Initialize AI handler
+window.ai = new AIHandler();
