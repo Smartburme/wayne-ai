@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Generation - Wayne-AI</title>
+    <link rel="stylesheet" href="../css/pages.css">
+</head>
+<body>
+    <div class="page-container">
+        <header>
+            <a href="../src/main.html" class="back-btn">← Back</a>
+            <h1>Image Generation</h1>
+        </header>
+        
+        <div class="content-area">
+            <textarea id="imagePrompt" placeholder="Describe the image you want to generate..."></textarea>
+            <div class="action-buttons">
+                <button id="generateImageBtn">
+                    <img src="../assets/images/gen-icon.png" alt="Generate">
+                    Generate
+                </button>
+                <button id="clearImageBtn">
+                    <img src="../assets/images/clear-icon.png" alt="Clear">
+                    Clear
+                </button>
+                <button id="downloadImageBtn">
+                    <img src="../assets/images/down-icon.png" alt="Download">
+                    Download
+                </button>
+            </div>
+            <div class="result-area" id="imageResult">
+                <!-- Generated images will appear here -->
+                <p class="placeholder-text">Your generated images will appear here</p>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../js/pages.js"></script>
+</body>
+</html>
