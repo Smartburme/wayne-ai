@@ -7,6 +7,15 @@ const ASSETS_TO_CACHE = [
     '/js/main.js',
     '/js/pages.js',
     '/assets/images/ai-logo.png',
+    '/assets/images/image-icon.png',
+    '/assets/images/code-icon.png',
+    '/assets/images/text-icon.png',
+    '/assets/images/clear-icon.png',
+    '/assets/images/attach-icon.png',
+    '/assets/images/down-icon.png',
+    '/assets/images/send-icon.png',
+    '/assets/images/gen-icon.png',
+    '/assets/images/copy-icon.png',
     // Add other essential assets
 ];
 
