@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wayne-AI | Chat Bot</title>
+    <link rel="stylesheet" href="../css/chat-bot.css">
+    <link rel="icon" href="../assets/images/ai-logo.png">
+</head>
+<body class="nero-theme">
+    <div class="app-container">
+        <header class="chat-header">
+            <button class="back-btn" onclick="location.href='main.html'">
+                <img src="../assets/images/down-icon.png" alt="Back">
+            </button>
+            <h1>AI Chat</h1>
+            <button id="new-chat-btn" class="icon-btn">
+                <img src="../assets/images/clear-icon.png" alt="New Chat">
+            </button>
+        </header>
+
+        <main class="chat-container">
+            <div id="chat-messages" class="chat-messages">
+                <!-- Messages will be inserted here by JavaScript -->
+            </div>
+            
+            <div class="chat-input-container">
+                <button class="attach-btn">
+                    <img src="../assets/images/attach-icon.png" alt="Attach">
+                </button>
+                <input type="text" id="chat-input" placeholder="Ask me anything...">
+                <button id="send-btn" class="send-btn">
+                    <img src="../assets/images/send-icon.png" alt="Send">
+                </button>
+            </div>
+        </main>
+
+        <nav class="chat-bottom-nav">
+            <button class="nav-btn" onclick="location.href='text-gen.html'">
+                <img src="../assets/images/text-icon.png" alt="Text">
+            </button>
+            <button class="nav-btn" onclick="location.href='image-gen.html'">
+                <img src="../assets/images/image-icon.png" alt="Image">
+            </button>
+            <button class="nav-btn" onclick="location.href='code-gen.html'">
+                <img src="../assets/images/code-icon.png" alt="Code">
+            </button>
+        </nav>
+    </div>
+    <script src="../js/chat-bot.js"></script>
+</body>
+</html>
