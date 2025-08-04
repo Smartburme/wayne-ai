@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Generation - Wayne-AI</title>
+    <link rel="stylesheet" href="../css/pages.css">
+</head>
+<body>
+    <div class="page-container">
+        <header>
+            <a href="../src/main.html" class="back-btn">← Back</a>
+            <h1>Text Generation</h1>
+        </header>
+        
+        <div class="content-area">
+            <textarea id="textPrompt" placeholder="Enter your text prompt here..."></textarea>
+            <div class="action-buttons">
+                <button id="generateTextBtn">
+                    <img src="../assets/images/gen-icon.png" alt="Generate">
+                    Generate
+                </button>
+                <button id="clearTextBtn">
+                    <img src="../assets/images/clear-icon.png" alt="Clear">
+                    Clear
+                </button>
+                <button id="downloadTextBtn">
+                    <img src="../assets/images/down-icon.png" alt="Download">
+                    Download
+                </button>
+            </div>
+            <div class="result-area" id="textResult">
+                <!-- Generated text will appear here -->
+            </div>
+        </div>
+    </div>
+    
+    <script src="../js/pages.js"></script>
+</body>
+</html>
