@@ -1,74 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wayne-AI | Image Generation</title>
-    <link rel="stylesheet" href="../css/pages.css">
-    <link rel="icon" href="../assets/images/ai-logo.png" type="image/png">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WAYNE - Image Generator</title>
+  <link rel="stylesheet" href="../css/style.css" />
 </head>
-<body class="nero-theme">
-    <div class="app-container">
-        <header class="page-header">
-            <button class="back-btn" onclick="location.href='main.html'">
-                <img src="../assets/images/down-icon.png" alt="Back" class="icon-md">
-            </button>
-            <img src="../assets/images/ai-logo.png" alt="Wayne AI Logo" class="page-logo">
-            <h1>Image Generation</h1>
-        </header>
+<body class="gen-page">
+  <header class="gen-header">
+    <img src="../assets/images/ai-logo-png" alt="WAYNE Logo" class="logo" />
+    <h1>🖼️ Image Generator</h1>
+    <a href="main.html" class="back-btn">←</a>
+  </header>  <main class="gen-container">
+    <textarea id="imagePrompt" placeholder="ပုံဖန်တီးရန် prompt ရိုက်ထည့်ပါ"></textarea><div class="gen-actions">
+  <button id="generateImage">
+    <img src="../assets/images/gen-icon.png" alt="Generate Icon" /> Generate
+  </button>
+  <button id="clearImage">
+    <img src="../assets/images/clear-icon.png" alt="Clear Icon" /> Clear
+  </button>
+</div>
 
-        <main class="page-content">
-            <div class="generation-container">
-                <textarea id="image-prompt" placeholder="Describe the image you want to generate..."></textarea>
-                
-                <div class="image-options">
-                    <div class="option-group">
-                        <label for="image-style">Style:</label>
-                        <select id="image-style">
-                            <option value="realistic">Realistic</option>
-                            <option value="cartoon">Cartoon</option>
-                            <option value="anime">Anime</option>
-                        </select>
-                    </div>
-                    <div class="option-group">
-                        <label for="image-size">Size:</label>
-                        <select id="image-size">
-                            <option value="512x512">512×512</option>
-                            <option value="1024x1024">1024×1024</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <button id="generate-image-btn" class="generate-btn">
-                    <img src="../assets/images/gen-icon.png" alt="Generate" class="icon-md">
-                    <span>Generate Image</span>
-                </button>
-                
-                <div id="image-output" class="image-output-container">
-                    <div class="placeholder-text">
-                        <img src="../assets/images/image-icon.png" alt="Image Icon" class="icon-lg">
-                        <p>Your generated image will appear here</p>
-                    </div>
-                </div>
-            </div>
-        </main>
+<div id="imageOutput" class="output-img-container">
+  <!-- Rendered image will appear here -->
+</div>
 
-        <nav class="bottom-nav">
-            <button class="nav-btn" onclick="location.href='chat-bot.html'">
-                <img src="../assets/images/send-icon.png" alt="Chat" class="icon-md">
-            </button>
-            <button class="nav-btn" onclick="location.href='text-gen.html'">
-                <img src="../assets/images/text-icon.png" alt="Text" class="icon-md">
-            </button>
-            <button class="nav-btn active">
-                <img src="../assets/images/image-icon.png" alt="Image" class="icon-md">
-            </button>
-        </nav>
-    </div>
-
-    <!-- Connected JavaScript Files -->
-    <script src="../js/env.js"></script>
-    <script src="../js/api.js"></script>
-    <script src="../js/image-gen.js"></script>
-</body>
+  </main>  <script src="../js/image-gen.js"></script></body>
 </html>
