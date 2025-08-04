@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wayne-AI | Image Generation</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/generation.css">
+    <link rel="icon" href="assets/icons/logo.svg">
+</head>
+<body class="nero-theme">
+    <header>
+        <div class="logo-container">
+            <img src="assets/icons/logo.svg" alt="Wayne-AI Logo" class="logo">
+            <h1>Wayne-AI Image Generator</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="chat.html">Chat</a></li>
+                <li><a href="text-gen.html">Text</a></li>
+                <li><a href="image-gen.html" class="active">Image</a></li>
+                <li><a href="code-gen.html">Code</a></li>
+                <li><a href="about.html">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="generation-container">
+        <section class="generation-history">
+            <h2>Image Generation History</h2>
+            <div class="history-list" id="imageHistoryList">
+                <!-- Image generation history will appear here -->
+            </div>
+        </section>
+
+        <section class="generation-area">
+            <div class="image-options">
+                <textarea id="imagePrompt" placeholder="Describe the image you want to generate..."></textarea>
+                <div class="style-options">
+                    <select id="imageStyle">
+                        <option value="realistic">Realistic</option>
+                        <option value="cartoon">Cartoon</option>
+                        <option value="anime">Anime</option>
+                        <option value="painting">Painting</option>
+                        <option value="3d">3D Render</option>
+                    </select>
+                    <button id="generateImageButton">Generate</button>
+                </div>
+            </div>
+            <div class="image-output" id="imageOutput">
+                <!-- Generated images will appear here -->
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-links">
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="about.html">About Us</a>
+        </div>
+        <p>© 2023 Wayne-AI. All rights reserved.</p>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/image-gen.js"></script>
+</body>
+</html>
