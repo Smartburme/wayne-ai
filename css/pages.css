@@ -36,17 +36,20 @@ textarea {
     font-size: 16px;
     resize: none;
     margin-bottom: 15px;
+    line-height: 1.5;
 }
 
 textarea:focus {
     outline: none;
     border-color: #4299e1;
+    box-shadow: 0 0 0 2px rgba(66, 153, 225, 0.2);
 }
 
 .action-buttons {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 10px;
 }
 
 .btn-primary {
@@ -60,31 +63,45 @@ textarea:focus {
     display: flex;
     align-items: center;
     gap: 8px;
-    transition: background-color 0.2s;
+    transition: all 0.2s;
+    font-size: 15px;
 }
 
 .btn-primary:hover {
     background-color: #3182ce;
+    transform: translateY(-1px);
 }
 
 .btn-primary img {
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
 }
 
 .btn-icon {
-    background-color: transparent;
+    background-color: #4a5568;
     border: none;
-    color: #a0aec0;
+    color: #e2e8f0;
     cursor: pointer;
     padding: 8px;
     border-radius: 50%;
-    transition: background-color 0.2s;
+    transition: all 0.2s;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-icon img {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
 }
 
 .btn-icon:hover {
-    background-color: #4a5568;
-    color: #e2e8f0;
+    background-color: #5a677a;
+    transform: scale(1.05);
 }
 
 .output-header {
@@ -96,6 +113,17 @@ textarea:focus {
     border-bottom: 1px solid #4a5568;
 }
 
+.output-header h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #e2e8f0;
+}
+
+.output-actions {
+    display: flex;
+    gap: 8px;
+}
+
 .output-content {
     flex: 1;
     background-color: #1a202c;
@@ -105,6 +133,7 @@ textarea:focus {
     color: #e2e8f0;
     font-family: 'Courier New', monospace;
     white-space: pre-wrap;
+    line-height: 1.5;
 }
 
 .model-selector {
@@ -118,6 +147,7 @@ textarea:focus {
     justify-content: space-between;
     align-items: center;
     border-top: 1px solid #4a5568;
+    z-index: 100;
 }
 
 .model-selector select {
@@ -126,6 +156,8 @@ textarea:focus {
     border: 1px solid #4a5568;
     border-radius: 8px;
     padding: 8px 12px;
+    font-size: 14px;
+    min-width: 150px;
 }
 
 .model-info {
@@ -135,11 +167,20 @@ textarea:focus {
     font-size: 14px;
 }
 
+/* Icon Sizes and Styles */
+.page-icon {
+    width: 28px;
+    height: 28px;
+    margin-right: 10px;
+    object-fit: contain;
+}
+
 /* Image Generator Specific Styles */
 .image-options, .code-options {
     display: flex;
     gap: 15px;
     margin-bottom: 15px;
+    flex-wrap: wrap;
 }
 
 .option-group {
@@ -150,6 +191,16 @@ textarea:focus {
 
 .option-group label {
     color: #a0aec0;
+    font-size: 14px;
+}
+
+.option-group select {
+    background-color: #1a202c;
+    color: #e2e8f0;
+    border: 1px solid #4a5568;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 14px;
 }
 
 .image-placeholder {
@@ -159,11 +210,24 @@ textarea:focus {
     justify-content: center;
     height: 100%;
     color: #4a5568;
+    gap: 10px;
 }
 
 .image-placeholder i {
     font-size: 48px;
-    margin-bottom: 10px;
+    color: #4a5568;
+}
+
+.image-placeholder p {
+    margin: 0;
+    font-size: 14px;
+}
+
+.generated-image {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 8px;
+    object-fit: contain;
 }
 
 /* Code Generator Specific Styles */
@@ -179,6 +243,7 @@ pre[class*="language-"] {
     margin: 0;
     padding: 15px;
     background-color: #1a202c !important;
+    font-size: 14px;
 }
 
 .token {
@@ -208,3 +273,51 @@ pre[class*="language-"] {
         transform: rotate(360deg);
     }
 }
+
+/* Error Messages */
+.error {
+    color: #f56565;
+    padding: 10px;
+    background-color: rgba(245, 101, 101, 0.1);
+    border-radius: 6px;
+    border-left: 3px solid #f56565;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .gen-container {
+        height: auto;
+        min-height: calc(100vh - 120px);
+    }
+    
+    .input-section, .output-section {
+        flex: none;
+        height: auto;
+    }
+    
+    .image-options, .code-options {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .model-selector {
+        flex-direction: column;
+        gap: 10px;
+        padding: 10px;
+    }
+    
+    .model-info {
+        gap: 10px;
+        font-size: 12px;
+    }
+}
+
+/* Animation for Generated Content */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.generated-content {
+    animation: fadeIn 0.3s ease-out forwards;
+    }
