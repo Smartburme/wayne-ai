@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wayne-AI | Text Generation</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/generation.css">
+    <link rel="icon" href="assets/icons/logo.svg">
+</head>
+<body class="nero-theme">
+    <header>
+        <div class="logo-container">
+            <img src="assets/icons/logo.svg" alt="Wayne-AI Logo" class="logo">
+            <h1>Wayne-AI Text Generator</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="chat.html">Chat</a></li>
+                <li><a href="text-gen.html" class="active">Text</a></li>
+                <li><a href="image-gen.html">Image</a></li>
+                <li><a href="code-gen.html">Code</a></li>
+                <li><a href="about.html">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="generation-container">
+        <section class="generation-history">
+            <h2>Text Generation History</h2>
+            <div class="history-list" id="textHistoryList">
+                <!-- Text generation history will appear here -->
+            </div>
+        </section>
+
+        <section class="generation-area">
+            <div class="text-options">
+                <select id="textType">
+                    <option value="article">Article</option>
+                    <option value="summary">Summary</option>
+                    <option value="story">Story</option>
+                    <option value="poem">Poem</option>
+                    <option value="email">Email</option>
+                </select>
+                <input type="text" id="textTopic" placeholder="Enter topic or prompt...">
+                <button id="generateTextButton">Generate</button>
+            </div>
+            <div class="text-output" id="textOutput">
+                <!-- Generated text will appear here -->
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-links">
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="about.html">About Us</a>
+        </div>
+        <p>© 2023 Wayne-AI. All rights reserved.</p>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/gemini.js"></script>
+</body>
+</html>
