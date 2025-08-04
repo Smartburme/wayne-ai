@@ -1,110 +1,157 @@
-import aiService from './api.js';
-import { ENV } from './env.js';
+import apiService from './api.js';
+import ENV from './env.js';
 
-class ChatHistory {
+class ChatManager {
     constructor() {
-        this.history = JSON.parse(localStorage.getItem('wayne-ai-chat-history')) || [];
-        this.maxHistory = 50;
+        this.chatHistory = [];
+        this.isGenerating = false;
+        this.initElements();
+        this.loadHistory();
+        this.setupEventListeners();
     }
 
-    addMessage(role, content) {
-        const message = {
-            id: Date.now().toString(36) + Math.random().toString(36).substring(2),
-            role,
-            content,
-            timestamp: new Date().toISOString()
-        };
-        
-        this.history.push(message);
-        if (this.history.length > this.maxHistory) {
-            this.history.shift();
-        }
-        
-        this._saveToStorage();
-        return message;
-    }
-
-    getConversation() {
-        return [...this.history];
-    }
-
-    clear() {
-        this.history = [];
-        this._saveToStorage();
-    }
-
-    _saveToStorage() {
-        localStorage.setItem('wayne-ai-chat-history', JSON.stringify(this.history));
-    }
-}
-
-class ChatUI {
-    constructor() {
+    initElements() {
         this.chatContainer = document.getElementById('chat-messages');
         this.inputField = document.getElementById('chat-input');
         this.sendButton = document.getElementById('send-btn');
         this.newChatButton = document.getElementById('new-chat-btn');
-        this.typingIndicator = this._createTypingIndicator();
     }
 
-    _createTypingIndicator() {
-        const indicator = document.createElement('div');
-        indicator.className = 'typing-indicator';
-        indicator.innerHTML = `
-            <div class="typing-dots">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        `;
-        return indicator;
-    }
-
-    showTyping() {
-        this.chatContainer.appendChild(this.typingIndicator);
-        this._scrollToBottom();
-    }
-
-    hideTyping() {
-        if (this.typingIndicator.parentNode) {
-            this.chatContainer.removeChild(this.typingIndicator);
+    loadHistory() {
+        const savedHistory = localStorage.getItem('wayne-ai-chat-history');
+        if (savedHistory) {
+            this.chatHistory = JSON.parse(savedHistory);
+            this.renderHistory();
         }
     }
 
-    addMessage(message) {
+    saveHistory() {
+        localStorage.setItem(
+            'wayne-ai-chat-history',
+            JSON.stringify(this.chatHistory)
+        );
+    }
+
+    renderHistory() {
+        this.chatContainer.innerHTML = '';
+        this.chatHistory.forEach(msg => this.renderMessage(msg));
+        this.scrollToBottom();
+    }
+
+    renderMessage(message) {
         const messageElement = document.createElement('div');
         messageElement.className = `message ${message.role}-message`;
-        messageElement.dataset.messageId = message.id;
-        
         messageElement.innerHTML = `
-            <div class="message-content">${this._escapeHtml(message.content)}</div>
+            <div class="message-content">${this.escapeHtml(message.content)}</div>
             <div class="message-meta">
-                <span class="message-time">${new Date(message.timestamp).toLocaleTimeString()}</span>
-                ${message.role === 'assistant' ? 
-                    '<button class="copy-btn" title="Copy message"><img src="../assets/images/attach-icon.png" alt="Copy"></button>' : ''}
+                <span class="message-time">
+                    ${new Date(message.timestamp).toLocaleTimeString()}
+                </span>
+                ${message.role === 'assistant' ? `
+                    <button class="copy-btn" title="Copy message">
+                        <img src="../assets/images/attach-icon.png" alt="Copy">
+                    </button>
+                ` : ''}
             </div>
         `;
         
-        this.chatContainer.appendChild(messageElement);
-        this._scrollToBottom();
-        
-        // Add copy functionality for AI messages
         if (message.role === 'assistant') {
-            messageElement.querySelector('.copy-btn').addEventListener('click', () => {
-                this._copyToClipboard(message.content);
-            });
+            messageElement.querySelector('.copy-btn')
+                .addEventListener('click', () => this.copyToClipboard(message.content));
+        }
+        
+        this.chatContainer.appendChild(messageElement);
+    }
+
+    async sendMessage() {
+        const userInput = this.inputField.value.trim();
+        if (!userInput || this.isGenerating) return;
+
+        // Add user message
+        const userMessage = {
+            role: 'user',
+            content: userInput,
+            timestamp: new Date().toISOString()
+        };
+        this.chatHistory.push(userMessage);
+        this.renderMessage(userMessage);
+        this.inputField.value = '';
+        this.saveHistory();
+
+        // Generate AI response
+        this.isGenerating = true;
+        this.showTypingIndicator();
+
+        try {
+            const response = await apiService.generateContent(
+                userInput,
+                'chat',
+                {
+                    context: this.getConversationContext(),
+                    provider: ENV.DEFAULT_PROVIDER
+                }
+            );
+
+            const aiMessage = {
+                role: 'assistant',
+                content: response.text,
+                timestamp: new Date().toISOString(),
+                provider: response.provider
+            };
+            
+            this.chatHistory.push(aiMessage);
+            this.renderMessage(aiMessage);
+            this.saveHistory();
+        } catch (error) {
+            console.error('Chat error:', error);
+            this.showError("Sorry, I couldn't process your request. Please try again.");
+        } finally {
+            this.isGenerating = false;
+            this.hideTypingIndicator();
         }
     }
 
-    clearMessages() {
-        this.chatContainer.innerHTML = '';
+    getConversationContext() {
+        return this.chatHistory
+            .filter(msg => msg.role === 'user')
+            .map(msg => msg.content)
+            .join('\n');
     }
 
-    _scrollToBottom() {
+    showTypingIndicator() {
+        const typingElement = document.createElement('div');
+        typingElement.className = 'message assistant-message typing';
+        typingElement.innerHTML = `
+            <div class="typing-indicator">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        `;
+        this.chatContainer.appendChild(typingElement);
+        this.scrollToBottom();
+        this.typingElement = typingElement;
+    }
+
+    hideTypingIndicator() {
+        if (this.typingElement && this.typingElement.parentNode) {
+            this.typingElement.remove();
+        }
+    }
+
+    showError(message) {
+        const errorElement = document.createElement('div');
+        errorElement.className = 'message system-message error';
+        errorElement.textContent = message;
+        this.chatContainer.appendChild(errorElement);
+        this.scrollToBottom();
+    }
+
+    scrollToBottom() {
         this.chatContainer.scrollTop = this.chatContainer.scrollHeight;
     }
 
-    _escapeHtml(unsafe) {
+    escapeHtml(unsafe) {
         return unsafe
             .replace(/&/g, "&amp;")
             .replace(/</g, "&lt;")
@@ -113,7 +160,7 @@ class ChatUI {
             .replace(/'/g, "&#039;");
     }
 
-    _copyToClipboard(text) {
+    copyToClipboard(text) {
         navigator.clipboard.writeText(text).then(() => {
             const tooltip = document.createElement('div');
             tooltip.className = 'copy-tooltip';
@@ -122,104 +169,31 @@ class ChatUI {
             
             setTimeout(() => {
                 tooltip.classList.add('fade-out');
-                setTimeout(() => document.body.removeChild(tooltip), 300);
+                setTimeout(() => tooltip.remove(), 300);
             }, 1000);
         });
     }
-}
 
-class ChatBot {
-    constructor() {
-        this.history = new ChatHistory();
-        this.ui = new ChatUI();
-        this.isGenerating = false;
-        
-        this._init();
-        this._loadPreviousChat();
-    }
-
-    _init() {
-        this.ui.sendButton.addEventListener('click', () => this._sendMessage());
-        this.ui.inputField.addEventListener('keypress', (e) => {
+    setupEventListeners() {
+        this.sendButton.addEventListener('click', () => this.sendMessage());
+        this.inputField.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault();
-                this._sendMessage();
+                this.sendMessage();
             }
         });
         
-        this.ui.newChatButton.addEventListener('click', () => {
+        this.newChatButton.addEventListener('click', () => {
             if (confirm('Start a new chat? Current conversation will be cleared.')) {
-                this.history.clear();
-                this.ui.clearMessages();
+                this.chatHistory = [];
+                this.saveHistory();
+                this.renderHistory();
             }
         });
-    }
-
-    _loadPreviousChat() {
-        const conversation = this.history.getConversation();
-        if (conversation.length > 0) {
-            conversation.forEach(msg => this.ui.addMessage(msg));
-        }
-    }
-
-    async _sendMessage() {
-        const userInput = this.ui.inputField.value.trim();
-        if (!userInput || this.isGenerating) return;
-        
-        this.ui.inputField.value = '';
-        
-        // Add user message to history and UI
-        const userMessage = this.history.addMessage('user', userInput);
-        this.ui.addMessage(userMessage);
-        
-        // Generate AI response
-        this.isGenerating = true;
-        this.ui.showTyping();
-        
-        try {
-            const response = await aiService.generateContent(
-                userInput,
-                'chat',
-                {
-                    context: this.history.getConversation()
-                        .filter(msg => msg.role === 'user')
-                        .map(msg => msg.content)
-                        .join('\n')
-                }
-            );
-            
-            const aiMessage = this.history.addMessage('assistant', response.text);
-            this.ui.addMessage(aiMessage);
-        } catch (error) {
-            const errorMessage = this.history.addMessage('assistant', 
-                "Sorry, I encountered an error. Please try again later.");
-            this.ui.addMessage(errorMessage);
-            console.error('Chat error:', error);
-        } finally {
-            this.isGenerating = false;
-            this.ui.hideTyping();
-        }
     }
 }
 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    // Apply saved theme
-    document.body.classList.add(`${ENV.THEME}-theme`);
-    
-    // Initialize chat bot
-    new ChatBot();
-    
-    // Register service worker if enabled
-    if (ENV.ENABLE_SERVICE_WORKER && 'serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/wayne-ai/sw.js')
-                .then(registration => {
-                    console.log('ServiceWorker registration successful');
-                })
-                .catch(err => {
-                    console.log('ServiceWorker registration failed: ', err);
-                });
-        });
-    }
+    new ChatManager();
 });
