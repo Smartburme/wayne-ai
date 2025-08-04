@@ -3,79 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Future Roadmap - Wayne-AI</title>
+    <title>Wayne-AI | Future Updates</title>
     <link rel="stylesheet" href="../css/future.css">
-    <link rel="stylesheet" href="../css/main.css">
+    <link rel="icon" href="../assets/images/ai-logo.png">
 </head>
-<body>
-    <div class="page-container">
-        <header>
-            <a href="../src/main.html" class="back-btn">← Back</a>
-            <h1>Future Roadmap</h1>
+<body class="nero-theme">
+    <div class="app-container">
+        <header class="page-header">
+            <button class="back-btn" onclick="location.href='about.html'">
+                <img src="../assets/images/down-icon.png" alt="Back">
+            </button>
+            <h1>Future Updates</h1>
         </header>
-        
-        <div class="future-container">
-            <div class="future-header">
-                <h1>Wayne-AI Development Roadmap</h1>
-                <p>Our vision for the future of AI assistance</p>
-            </div>
-            
+
+        <main class="future-content">
             <div class="roadmap">
-                <!-- Phase 1 -->
                 <div class="roadmap-item">
-                    <div class="roadmap-phase">
-                        <div class="phase-marker">1</div>
-                        <div class="phase-line"></div>
-                    </div>
+                    <div class="timeline-marker"></div>
                     <div class="roadmap-content">
-                        <h3>Core Functionality <span class="status-badge status-completed">Completed</span></h3>
-                        <ul class="roadmap-features">
-                            <li>Basic chat interface with Gemini and OpenAI integration</li>
-                            <li>Text generation capabilities</li>
-                            <li>Image generation from prompts</li>
-                            <li>Code generation in multiple languages</li>
-                            <li>Settings and configuration</li>
+                        <h3>Version 1.1 (Q4 2023)</h3>
+                        <ul>
+                            <li>Voice input/output support</li>
+                            <li>Additional AI model integrations</li>
+                            <li>Enhanced image editing capabilities</li>
                         </ul>
                     </div>
                 </div>
                 
-                <!-- Phase 2 -->
                 <div class="roadmap-item">
-                    <div class="roadmap-phase">
-                        <div class="phase-marker">2</div>
-                        <div class="phase-line"></div>
-                    </div>
+                    <div class="timeline-marker"></div>
                     <div class="roadmap-content">
-                        <h3>Enhanced Features <span class="status-badge status-inprogress">In Progress</span></h3>
-                        <ul class="roadmap-features">
-                            <li>Multi-modal AI (text + image understanding)</li>
-                            <li>Document upload and analysis</li>
-                            <li>Voice input and output</li>
-                            <li>Custom AI model fine-tuning</li>
-                            <li>Browser extension integration</li>
+                        <h3>Version 2.0 (Q1 2024)</h3>
+                        <ul>
+                            <li>Multi-modal AI (text+image combined)</li>
+                            <li>Local AI model support</li>
+                            <li>Plugin system for extended functionality</li>
                         </ul>
                     </div>
                 </div>
                 
-                <!-- Phase 3 -->
                 <div class="roadmap-item">
-                    <div class="roadmap-phase">
-                        <div class="phase-marker">3</div>
-                        <div class="phase-line"></div>
-                    </div>
+                    <div class="timeline-marker"></div>
                     <div class="roadmap-content">
-                        <h3>Advanced Capabilities <span class="status-badge status-planned">Planned</span></h3>
-                        <ul class="roadmap-features">
+                        <h3>Long Term Vision</h3>
+                        <ul>
                             <li>Personal AI memory and context</li>
                             <li>Automated workflow creation</li>
-                            <li>Real-time collaboration features</li>
-                            <li>Local AI model support</li>
-                            <li>Advanced plugin system</li>
+                            <li>3D model generation</li>
                         </ul>
                     </div>
                 </div>
             </div>
-        </div>
+            
+            <div class="feature-request">
+                <h3>Suggest a Feature</h3>
+                <textarea placeholder="What would you like to see in future versions?"></textarea>
+                <button class="submit-btn">Submit Idea</button>
+            </div>
+        </main>
     </div>
+    <script src="../js/future.js"></script>
 </body>
 </html>
