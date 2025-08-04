@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Generation - Wayne-AI</title>
+    <link rel="stylesheet" href="../css/pages.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css">
+</head>
+<body>
+    <div class="page-container">
+        <header>
+            <a href="../src/main.html" class="back-btn">← Back</a>
+            <h1>Code Generation</h1>
+        </header>
+        
+        <div class="content-area">
+            <div class="language-selector">
+                <select id="languageSelect">
+                    <option value="python">Python</option>
+                    <option value="javascript">JavaScript</option>
+                    <option value="html">HTML</option>
+                    <option value="css">CSS</option>
+                    <option value="java">Java</option>
+                    <option value="php">PHP</option>
+                </select>
+            </div>
+            <textarea id="codePrompt" placeholder="Describe the code you want to generate..."></textarea>
+            <div class="action-buttons">
+                <button id="generateCodeBtn">
+                    <img src="../assets/images/gen-icon.png" alt="Generate">
+                    Generate
+                </button>
+                <button id="clearCodeBtn">
+                    <img src="../assets/images/clear-icon.png" alt="Clear">
+                    Clear
+                </button>
+                <button id="copyCodeBtn">
+                    <img src="../assets/images/copy-icon.png" alt="Copy">
+                    Copy
+                </button>
+            </div>
+            <div class="result-area" id="codeResult">
+                <pre><code class="language-javascript" id="generatedCode">// Your generated code will appear here</code></pre>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script src="../js/pages.js"></script>
+    <script>hljs.highlightAll();</script>
+</body>
+</html>
