@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wayne-AI | Your AI Assistant</title>
+    <title>Text Generation | Wayne-AI</title>
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/generation.css">
     <link rel="icon" href="assets/icons/ai-logo.svg" type="image/svg+xml">
 </head>
 <body>
@@ -16,51 +16,102 @@
         </div>
         <nav>
             <ul>
-                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="index.html">Home</a></li>
                 <li><a href="chat.html">Chat</a></li>
-                <li><a href="text-gen.html">Text</a></li>
+                <li><a href="text-gen.html" class="active">Text</a></li>
                 <li><a href="image-gen.html">Image</a></li>
                 <li><a href="code-gen.html">Code</a></li>
             </ul>
         </nav>
     </header>
 
-    <main class="dashboard-container">
-        <section class="ai-assistant">
-            <div class="chat-window">
-                <div class="chat-history" id="chatHistory">
-                    <div class="ai-message">
-                        <img src="assets/icons/ai-avatar.svg" alt="AI Avatar">
-                        <p>Hello! I'm Wayne-AI, your personal AI assistant. How can I help you today?</p>
+    <main class="generation-container">
+        <section class="generation-header">
+            <h1>Text Generation</h1>
+            <p>Generate high-quality content for blogs, articles, social media, and more with our advanced AI writing assistant.</p>
+        </section>
+
+        <section class="generation-main">
+            <div class="generation-input">
+                <div class="input-area">
+                    <label for="textPrompt">Your Prompt</label>
+                    <textarea id="textPrompt" placeholder="Describe what you want to generate..."></textarea>
+                </div>
+
+                <div class="parameter-controls">
+                    <h3>Generation Parameters</h3>
+                    
+                    <div class="parameter-group">
+                        <div class="parameter-row">
+                            <label for="creativity">Creativity</label>
+                            <span class="slider-value" id="creativityValue">0.7</span>
+                        </div>
+                        <div class="slider-container">
+                            <input type="range" id="creativity" min="0" max="1" step="0.1" value="0.7">
+                        </div>
+                    </div>
+
+                    <div class="parameter-group">
+                        <div class="parameter-row">
+                            <label for="length">Length</label>
+                            <span class="slider-value" id="lengthValue">Medium</span>
+                        </div>
+                        <div class="slider-container">
+                            <input type="range" id="length" min="1" max="3" step="1" value="2">
+                        </div>
+                    </div>
+
+                    <div class="parameter-group">
+                        <label for="toneSelect">Tone</label>
+                        <select id="toneSelect">
+                            <option value="neutral">Neutral</option>
+                            <option value="professional">Professional</option>
+                            <option value="casual">Casual</option>
+                            <option value="enthusiastic">Enthusiastic</option>
+                            <option value="humorous">Humorous</option>
+                        </select>
                     </div>
                 </div>
-                <div class="input-area">
-                    <textarea id="userInput" placeholder="Ask me anything..."></textarea>
-                    <button id="sendButton">
-                        <img src="assets/icons/send-icon.svg" alt="Send">
-                    </button>
+
+                <button class="btn btn-primary" id="generateBtn">
+                    <img src="assets/icons/generate-icon.svg" alt="Generate" class="btn-icon">
+                    Generate Text
+                </button>
+            </div>
+
+            <div class="generation-output">
+                <div class="output-display">
+                    <div class="output-content" id="outputContent">
+                        <div class="output-placeholder">
+                            <img src="assets/icons/text-icon.svg" alt="Text">
+                            <h3>Your generated content will appear here</h3>
+                            <p>Enter a prompt and click "Generate" to get started</p>
+                        </div>
+                    </div>
+                    <div class="output-actions">
+                        <button class="btn btn-secondary" id="copyBtn" disabled>
+                            <img src="assets/icons/copy-icon.svg" alt="Copy" class="btn-icon">
+                            Copy
+                        </button>
+                        <button class="btn btn-secondary" id="downloadBtn" disabled>
+                            <img src="assets/icons/download-icon.svg" alt="Download" class="btn-icon">
+                            Download
+                        </button>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <section class="quick-actions">
-            <h2>Quick Tools</h2>
-            <div class="action-grid">
-                <div class="action-card" onclick="location.href='text-gen.html'">
-                    <img src="assets/icons/text-icon.svg" alt="Text Generation">
-                    <h3>Text Generation</h3>
-                    <p>Generate high-quality content in seconds</p>
-                </div>
-                <div class="action-card" onclick="location.href='image-gen.html'">
-                    <img src="assets/icons/image-icon.svg" alt="Image Generation">
-                    <h3>Image Creation</h3>
-                    <p>Turn your ideas into stunning visuals</p>
-                </div>
-                <div class="action-card" onclick="location.href='code-gen.html'">
-                    <img src="assets/icons/code-icon.svg" alt="Code Generation">
-                    <h3>Code Assistant</h3>
-                    <p>Write, explain and debug code</p>
-                </div>
+        <section class="history-section">
+            <div class="history-header">
+                <h3>Generation History</h3>
+                <button class="btn btn-secondary" id="clearHistoryBtn">
+                    <img src="assets/icons/clear-icon.svg" alt="Clear" class="btn-icon">
+                    Clear
+                </button>
+            </div>
+            <div class="history-items" id="historyItems">
+                <!-- History items will be added here dynamically -->
             </div>
         </section>
     </main>
@@ -84,6 +135,6 @@
 
     <script src="js/env.js"></script>
     <script src="js/gemini.js"></script>
-    <script src="js/main.js"></script>
+    <script src="js/text-gen.js"></script>
 </body>
-</html>
+    </html>
