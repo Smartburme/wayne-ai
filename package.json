@@ -1,0 +1,21 @@
+{
+  "name": "wayne-ai",
+  "version": "1.0.0",
+  "description": "AI-powered assistant with multiple generation capabilities",
+  "scripts": {
+    "start": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^1.0.0",
+    "@stabilityai/sdk-node": "^1.0.0",
+    "openai": "^4.0.0"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0",
+    "@vitejs/plugin-basic-ssl": "^1.0.0"
+  },
+  "type": "module"
+}
