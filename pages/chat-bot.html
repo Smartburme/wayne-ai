@@ -5,17 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wayne-AI | Chat Bot</title>
     <link rel="stylesheet" href="../css/chat-bot.css">
-    <link rel="icon" href="../assets/images/ai-logo.png">
+    <link rel="icon" href="../assets/images/ai-logo.png" type="image/png">
 </head>
 <body class="nero-theme">
     <div class="app-container">
         <header class="chat-header">
             <button class="back-btn" onclick="location.href='main.html'">
-                <img src="../assets/images/down-icon.png" alt="Back">
+                <img src="../assets/images/down-icon.png" alt="Back" class="icon-md">
             </button>
-            <h1>AI Chat</h1>
+            <img src="../assets/images/ai-logo.png" alt="Wayne AI Logo" class="header-logo">
             <button id="new-chat-btn" class="icon-btn">
-                <img src="../assets/images/clear-icon.png" alt="New Chat">
+                <img src="../assets/images/clear-icon.png" alt="New Chat" class="icon-md">
             </button>
         </header>
 
@@ -26,27 +26,34 @@
             
             <div class="chat-input-container">
                 <button class="attach-btn">
-                    <img src="../assets/images/attach-icon.png" alt="Attach">
+                    <img src="../assets/images/attach-icon.png" alt="Attach" class="icon-md">
                 </button>
                 <input type="text" id="chat-input" placeholder="Ask me anything...">
                 <button id="send-btn" class="send-btn">
-                    <img src="../assets/images/send-icon.png" alt="Send">
+                    <img src="../assets/images/send-icon.png" alt="Send" class="icon-md">
                 </button>
             </div>
         </main>
 
         <nav class="chat-bottom-nav">
-            <button class="nav-btn" onclick="location.href='text-gen.html'">
-                <img src="../assets/images/text-icon.png" alt="Text">
+            <button class="chat-nav-btn" onclick="location.href='text-gen.html'">
+                <img src="../assets/images/text-icon.png" alt="Text" class="nav-icon">
+                <span>Text</span>
             </button>
-            <button class="nav-btn" onclick="location.href='image-gen.html'">
-                <img src="../assets/images/image-icon.png" alt="Image">
+            <button class="chat-nav-btn" onclick="location.href='image-gen.html'">
+                <img src="../assets/images/image-icon.png" alt="Image" class="nav-icon">
+                <span>Image</span>
             </button>
-            <button class="nav-btn" onclick="location.href='code-gen.html'">
-                <img src="../assets/images/code-icon.png" alt="Code">
+            <button class="chat-nav-btn" onclick="location.href='code-gem.html'">
+                <img src="../assets/images/code-icon.png" alt="Code" class="nav-icon">
+                <span>Code</span>
             </button>
         </nav>
     </div>
+
+    <!-- Connected JavaScript Files -->
+    <script src="../js/env.js"></script>
+    <script src="../js/api.js"></script>
     <script src="../js/chat-bot.js"></script>
 </body>
 </html>
