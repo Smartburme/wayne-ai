@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wayne-AI | Your AI Assistant</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="icon" href="assets/icons/logo.svg">
+</head>
+<body class="nero-theme">
+    <header>
+        <div class="logo-container">
+            <img src="assets/icons/logo.svg" alt="Wayne-AI Logo" class="logo">
+            <h1>Wayne-AI</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="chat.html">Chat</a></li>
+                <li><a href="text-gen.html">Text</a></li>
+                <li><a href="image-gen.html">Image</a></li>
+                <li><a href="code-gen.html">Code</a></li>
+                <li><a href="about.html">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="dashboard">
+        <section class="ai-assistant">
+            <div class="chat-container">
+                <div class="chat-history" id="chatHistory">
+                    <!-- Messages will appear here -->
+                </div>
+                <div class="input-area">
+                    <input type="text" id="userInput" placeholder="Ask Wayne-AI anything...">
+                    <button id="sendButton">Send</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="quick-generators">
+            <h2>Quick Generators</h2>
+            <div class="generator-grid">
+                <a href="text-gen.html" class="generator-card">
+                    <img src="assets/icons/text-gen.svg" alt="Text Generation">
+                    <h3>Text Generation</h3>
+                </a>
+                <a href="image-gen.html" class="generator-card">
+                    <img src="assets/icons/image-gen.svg" alt="Image Generation">
+                    <h3>Image Generation</h3>
+                </a>
+                <a href="code-gen.html" class="generator-card">
+                    <img src="assets/icons/code-gen.svg" alt="Code Generation">
+                    <h3>Code Generation</h3>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-links">
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="about.html">About Us</a>
+        </div>
+        <p>© 2023 Wayne-AI. All rights reserved.</p>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/gemini.js"></script>
+</body>
+</html>
