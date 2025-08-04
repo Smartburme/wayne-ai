@@ -3,38 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Text Generation - Wayne-AI</title>
+    <title>Wayne-AI | Text Generator</title>
+    <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="../css/pages.css">
 </head>
 <body>
-    <div class="page-container">
-        <header>
-            <a href="../src/main.html" class="back-btn">← Back</a>
-            <h1>Text Generation</h1>
-        </header>
-        
-        <div class="content-area">
-            <textarea id="textPrompt" placeholder="Enter your text prompt here..."></textarea>
-            <div class="action-buttons">
-                <button id="generateTextBtn">
-                    <img src="../assets/images/gen-icon.png" alt="Generate">
-                    Generate
-                </button>
-                <button id="clearTextBtn">
-                    <img src="../assets/images/clear-icon.png" alt="Clear">
-                    Clear
-                </button>
-                <button id="downloadTextBtn">
-                    <img src="../assets/images/down-icon.png" alt="Download">
-                    Download
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-left">
+                <img src="../assets/images/text-icon.png" alt="Text Icon" class="page-icon">
+                <h1>Text Generator</h1>
+            </div>
+            <div class="header-right">
+                <button class="btn-back" onclick="navigateTo('main')">
+                    <i class="fas fa-arrow-left"></i> Back
                 </button>
             </div>
-            <div class="result-area" id="textResult">
-                <!-- Generated text will appear here -->
+        </header>
+
+        <!-- Main Content -->
+        <main class="gen-container">
+            <div class="input-section">
+                <textarea id="text-prompt" placeholder="Enter your text prompt here..."></textarea>
+                <div class="action-buttons">
+                    <button id="clear-text" class="btn-icon" title="Clear">
+                        <img src="../assets/images/clear-icon.png" alt="Clear">
+                    </button>
+                    <button id="generate-text" class="btn-primary">
+                        <img src="../assets/images/gen-icon.png" alt="Generate"> Generate
+                    </button>
+                </div>
+            </div>
+            
+            <div class="output-section">
+                <div class="output-header">
+                    <h3>Generated Text</h3>
+                    <button id="copy-text" class="btn-icon" title="Copy">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
+                <div id="text-output" class="output-content"></div>
+            </div>
+        </main>
+
+        <!-- Model Selection -->
+        <div class="model-selector">
+            <select id="text-model">
+                <option value="gemini-pro">Gemini Pro</option>
+                <option value="gpt-4">GPT-4</option>
+                <option value="claude-2">Claude 2</option>
+            </select>
+            <div class="model-info">
+                <span id="model-status">Ready</span>
+                <span id="token-count">0 tokens</span>
             </div>
         </div>
     </div>
-    
+
     <script src="../js/pages.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </body>
 </html>
