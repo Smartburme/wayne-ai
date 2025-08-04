@@ -3,29 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wayne-AI | Image Generator</title>
-    <link rel="stylesheet" href="../css/main.css">
+    <title>Wayne-AI | Image Generation</title>
     <link rel="stylesheet" href="../css/pages.css">
+    <link rel="icon" href="../assets/images/ai-logo.png">
 </head>
-<body>
+<body class="nero-theme">
     <div class="app-container">
-        <!-- Header -->
-        <header class="app-header">
-            <div class="header-left">
-                <img src="../assets/images/image-icon.png" alt="Image Icon" class="page-icon">
-                <h1>Image Generator</h1>
-            </div>
-            <div class="header-right">
-                <button class="btn-back" onclick="navigateTo('main')">
-                    <i class="fas fa-arrow-left"></i> Back
-                </button>
-            </div>
+        <header class="page-header">
+            <button class="back-btn" onclick="location.href='main.html'">
+                <img src="../assets/images/down-icon.png" alt="Back">
+            </button>
+            <h1>Image Generation</h1>
         </header>
 
-        <!-- Main Content -->
-        <main class="gen-container">
-            <div class="input-section">
+        <main class="page-content">
+            <div class="generation-container">
                 <textarea id="image-prompt" placeholder="Describe the image you want to generate..."></textarea>
+                
                 <div class="image-options">
                     <div class="option-group">
                         <label for="image-style">Style:</label>
@@ -36,58 +30,42 @@
                             <option value="painting">Painting</option>
                         </select>
                     </div>
+                    
                     <div class="option-group">
-                        <label for="image-quality">Quality:</label>
-                        <select id="image-quality">
-                            <option value="standard">Standard</option>
-                            <option value="hd">HD</option>
+                        <label for="image-size">Size:</label>
+                        <select id="image-size">
+                            <option value="512x512">512x512</option>
+                            <option value="1024x1024">1024x1024</option>
                         </select>
                     </div>
                 </div>
-                <div class="action-buttons">
-                    <button id="clear-image" class="btn-icon" title="Clear">
-                        <img src="../assets/images/clear-icon.png" alt="Clear">
-                    </button>
-                    <button id="generate-image" class="btn-primary">
-                        <img src="../assets/images/gen-icon.png" alt="Generate"> Generate
-                    </button>
-                </div>
-            </div>
-            
-            <div class="output-section">
-                <div class="output-header">
-                    <h3>Generated Image</h3>
-                    <div class="output-actions">
-                        <button id="download-image" class="btn-icon" title="Download">
-                            <img src="../assets/images/down-icon.png" alt="Download">
-                        </button>
-                    </div>
-                </div>
-                <div id="image-output" class="output-content">
-                    <div class="image-placeholder">
-                        <i class="fas fa-image"></i>
+                
+                <button id="generate-image-btn" class="generate-btn">
+                    <img src="../assets/images/gen-icon.png" alt="Generate">
+                    <span>Generate Image</span>
+                </button>
+                
+                <div id="image-output" class="image-output-container">
+                    <div class="placeholder-text">
+                        <img src="../assets/images/image-icon.png" alt="Image Icon">
                         <p>Your generated image will appear here</p>
                     </div>
                 </div>
             </div>
         </main>
 
-        <!-- Model Selection -->
-        <div class="model-selector">
-            <select id="image-model">
-                <option value="dall-e-3">DALL-E 3</option>
-                <option value="stable-diffusion">Stable Diffusion</option>
-                <option value="midjourney">Midjourney</option>
-            </select>
-            <div class="model-info">
-                <span id="model-status">Ready</span>
-                <span id="credits-remaining">100 credits</span>
-            </div>
-        </div>
+        <nav class="bottom-nav">
+            <button class="nav-btn" onclick="location.href='main.html'">
+                <img src="../assets/images/gen-icon.png" alt="Home">
+            </button>
+            <button class="nav-btn" onclick="location.href='chat-bot.html'">
+                <img src="../assets/images/send-icon.png" alt="Chat">
+            </button>
+            <button class="nav-btn" onclick="location.href='setting.html'">
+                <img src="../assets/images/clear-icon.png" alt="Settings">
+            </button>
+        </nav>
     </div>
-
     <script src="../js/pages.js"></script>
-    <script src="../js/api.js"></script>
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </body>
 </html>
