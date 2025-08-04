@@ -1,81 +1,113 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const geminiKeyInput = document.getElementById('geminiKey');
-    const openaiKeyInput = document.getElementById('openaiKey');
-    const themeSelect = document.getElementById('themeSelect');
-    const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+    const apiKeyForm = document.getElementById('apiKeyForm');
+    const themeToggle = document.getElementById('themeToggle');
+    const clearDataBtn = document.getElementById('clearDataBtn');
     const exportDataBtn = document.getElementById('exportDataBtn');
-    const saveSettingsBtn = document.getElementById('saveSettingsBtn');
+    const saveBtn = document.getElementById('saveSettingsBtn');
     
     // Load saved settings
     loadSettings();
     
-    // Event listeners
-    saveSettingsBtn.addEventListener('click', saveSettings);
-    clearHistoryBtn.addEventListener('click', clearHistory);
-    exportDataBtn.addEventListener('click', exportData);
+    // Event Listeners
+    apiKeyForm.addEventListener('submit', saveSettings);
+    themeToggle.addEventListener('change', toggleTheme);
+    clearDataBtn.addEventListener('click', clearAppData);
+    exportDataBtn.addEventListener('click', exportAppData);
+    saveBtn.addEventListener('click', saveSettings);
     
+    // Functions
     function loadSettings() {
         const settings = JSON.parse(localStorage.getItem('wayneAISettings')) || {};
         
-        if (settings.geminiKey) {
-            geminiKeyInput.value = settings.geminiKey;
-        }
+        // Set form values
+        document.getElementById('geminiKey').value = settings.geminiKey || '';
+        document.getElementById('openaiKey').value = settings.openaiKey || '';
+        document.getElementById('defaultModel').value = settings.defaultModel || 'gemini';
+        themeToggle.checked = settings.theme === 'dark';
         
-        if (settings.openaiKey) {
-            openaiKeyInput.value = settings.openaiKey;
-        }
-        
-        if (settings.theme) {
-            themeSelect.value = settings.theme;
-            applyTheme(settings.theme);
-        }
+        // Apply theme
+        applyTheme(settings.theme || 'light');
     }
     
-    function saveSettings() {
+    function saveSettings(e) {
+        if (e) e.preventDefault();
+        
         const settings = {
-            geminiKey: geminiKeyInput.value,
-            openaiKey: openaiKeyInput.value,
-            theme: themeSelect.value
+            geminiKey: document.getElementById('geminiKey').value.trim(),
+            openaiKey: document.getElementById('openaiKey').value.trim(),
+            defaultModel: document.getElementById('defaultModel').value,
+            theme: themeToggle.checked ? 'dark' : 'light'
         };
         
         localStorage.setItem('wayneAISettings', JSON.stringify(settings));
-        applyTheme(themeSelect.value);
         
-        // Initialize API with new keys
+        // Update WayneAI configuration
         if (typeof WayneAI !== 'undefined') {
-            WayneAI.init(settings.geminiKey, settings.openaiKey);
+            WayneAI.currentModel = settings.defaultModel;
         }
         
-        alert('Settings saved successfully!');
+        // Show confirmation
+        showToast('Settings saved successfully!');
+    }
+    
+    function toggleTheme() {
+        const theme = themeToggle.checked ? 'dark' : 'light';
+        applyTheme(theme);
     }
     
     function applyTheme(theme) {
-        document.body.className = theme;
+        document.documentElement.setAttribute('data-theme', theme);
     }
     
-    function clearHistory() {
-        if (confirm('Are you sure you want to clear all chat history? This cannot be undone.')) {
-            localStorage.removeItem('wayneAIChatHistory');
-            alert('Chat history cleared!');
+    function clearAppData() {
+        if (confirm('Are you sure you want to clear ALL app data? This cannot be undone.')) {
+            localStorage.removeItem('wayneAIChats');
+            localStorage.removeItem('wayneAIGenerations');
+            showToast('All app data has been cleared');
         }
     }
     
-    function exportData() {
+    async function exportAppData() {
+        const chats = JSON.parse(localStorage.getItem('wayneAIChats')) || [];
+        const generations = JSON.parse(localStorage.getItem('wayneAIGenerations')) || [];
         const settings = JSON.parse(localStorage.getItem('wayneAISettings')) || {};
-        const chatHistory = JSON.parse(localStorage.getItem('wayneAIChatHistory')) || [];
         
         const data = {
-            settings: settings,
-            chatHistory: chatHistory,
-            exportedAt: new Date().toISOString()
+            meta: {
+                exportedAt: new Date().toISOString(),
+                version: '1.0'
+            },
+            settings,
+            chats,
+            generations
         };
         
         const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
+        
         const a = document.createElement('a');
         a.href = url;
-        a.download = `wayne-ai-export-${new Date().toISOString().split('T')[0]}.json`;
+        a.download = `wayne-ai-backup-${new Date().toISOString().split('T')[0]}.json`;
+        document.body.appendChild(a);
         a.click();
+        document.body.removeChild(a);
         URL.revokeObjectURL(url);
+    }
+    
+    function showToast(message) {
+        const toast = document.createElement('div');
+        toast.className = 'toast-notification';
+        toast.textContent = message;
+        document.body.appendChild(toast);
+        
+        setTimeout(() => {
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    document.body.removeChild(toast);
+                }, 300);
+            }, 3000);
+        }, 100);
     }
 });
