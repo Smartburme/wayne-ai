@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Wayne-AI</title>
+    <link rel="stylesheet" href="../css/setting.css">
+</head>
+<body>
+    <div class="page-container">
+        <header>
+            <a href="../src/main.html" class="back-btn">← Back</a>
+            <h1>Settings</h1>
+        </header>
+        
+        <div class="settings-container">
+            <div class="setting-group">
+                <h2>API Configuration</h2>
+                <div class="setting-item">
+                    <label for="geminiKey">Gemini API Key</label>
+                    <input type="password" id="geminiKey" placeholder="Enter your Gemini API key">
+                </div>
+                <div class="setting-item">
+                    <label for="openaiKey">OpenAI API Key</label>
+                    <input type="password" id="openaiKey" placeholder="Enter your OpenAI API key">
+                </div>
+            </div>
+            
+            <div class="setting-group">
+                <h2>Appearance</h2>
+                <div class="setting-item">
+                    <label for="themeSelect">Theme</label>
+                    <select id="themeSelect">
+                        <option value="light">Light</option>
+                        <option value="dark">Dark</option>
+                        <option value="system">System Default</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="setting-group">
+                <h2>Data</h2>
+                <div class="setting-item">
+                    <button id="clearHistoryBtn" class="danger-btn">Clear Chat History</button>
+                </div>
+                <div class="setting-item">
+                    <button id="exportDataBtn">Export All Data</button>
+                </div>
+            </div>
+            
+            <button id="saveSettingsBtn" class="save-btn">Save Settings</button>
+        </div>
+    </div>
+    
+    <script src="../js/setting.js"></script>
+</body>
+</html>
