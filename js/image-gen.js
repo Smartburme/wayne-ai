@@ -1,112 +1,173 @@
-// Image Generation Logic
+// Enhanced Image Generation with Model Selection
 document.addEventListener('DOMContentLoaded', function() {
-    const generateButton = document.getElementById('generateImageButton');
-    const imagePrompt = document.getElementById('imagePrompt');
-    const imageStyle = document.getElementById('imageStyle');
+    const generateBtn = document.getElementById('generateImageButton');
+    const promptInput = document.getElementById('imagePrompt');
+    const styleSelect = document.getElementById('imageStyle');
+    const sizeSelect = document.getElementById('imageSize');
+    const modelSelector = document.getElementById('modelSelector');
     const imageOutput = document.getElementById('imageOutput');
+    const historyList = document.getElementById('imageHistoryList');
     
-    if (generateButton) {
-        generateButton.addEventListener('click', generateImage);
+    // Initialize model selector
+    function initModelSelector() {
+        const status = ai.getApiStatus();
+        
+        if (status.stability.enabled) {
+            modelSelector.innerHTML += `
+                <div class="model-option" data-model="stability" data-engine="stable-diffusion-xl-1024-v1-0">
+                    <div class="model-name">Stable Diffusion XL</div>
+                    <div class="model-status">Stability AI</div>
+                </div>
+            `;
+        }
+        
+        if (status.openai.enabled) {
+            modelSelector.innerHTML += `
+                <div class="model-option" data-model="openai" data-engine="dall-e-3">
+                    <div class="model-name">DALL-E 3</div>
+                    <div class="model-status">OpenAI</div>
+                </div>
+            `;
+        }
+        
+        // Set first available model as active
+        const firstModel = document.querySelector('.model-option');
+        if (firstModel) {
+            firstModel.classList.add('active');
+        }
     }
     
+    // Handle model selection
+    modelSelector.addEventListener('click', function(e) {
+        const modelOption = e.target.closest('.model-option');
+        if (modelOption) {
+            document.querySelectorAll('.model-option').forEach(opt => {
+                opt.classList.remove('active');
+            });
+            modelOption.classList.add('active');
+        }
+    });
+    
+    // Generate image
     async function generateImage() {
-        const prompt = imagePrompt.value.trim();
-        const style = imageStyle.value;
-        
+        const prompt = promptInput.value.trim();
         if (!prompt) {
             alert('Please enter an image description');
             return;
         }
         
-        const fullPrompt = `${prompt} (${style} style)`;
+        const style = styleSelect.value;
+        const size = sizeSelect.value;
+        const selectedModel = document.querySelector('.model-option.active');
+        
+        if (!selectedModel) {
+            alert('No AI model selected');
+            return;
+        }
+        
+        const model = selectedModel.dataset.model;
+        const engine = selectedModel.dataset.engine;
         
         try {
-            generateButton.disabled = true;
-            generateButton.textContent = 'Generating...';
+            // Update UI for generation
+            generateBtn.disabled = true;
+            generateBtn.innerHTML = '<div class="loading-spinner"></div> Generating...';
+            imageOutput.innerHTML = '<div class="loading-spinner"></div>';
             
-            // In a real implementation, this would call the Gemini API
-            // const imageUrl = await gemini.generateImage(fullPrompt);
-            // For now, we'll simulate it
-            await new Promise(resolve => setTimeout(resolve, 2000));
+            // Generate with selected model
+            const options = {
+                style,
+                size,
+                engine
+            };
             
-            // Simulated response
-            const imageUrl = `https://placehold.co/600x400/2A2A2A/FFFFFF?text=${encodeURIComponent(prompt)}`;
+            const result = await ai.generateImage(prompt, options);
             
-            // Display the image
+            // Display result
             const img = document.createElement('img');
-            img.src = imageUrl;
+            img.src = result.url;
             img.alt = prompt;
-            img.classList.add('generated-image');
+            img.className = 'generated-image';
             
-            imageOutput.prepend(img);
+            imageOutput.innerHTML = '';
+            imageOutput.appendChild(img);
             
             // Save to history
-            saveImageToHistory(prompt, imageUrl, style);
+            saveToHistory({
+                prompt,
+                imageUrl: result.url,
+                style,
+                size,
+                model,
+                engine,
+                timestamp: new Date().toISOString()
+            });
             
         } catch (error) {
-            console.error('Error generating image:', error);
-            alert('Failed to generate image. Please try again.');
+            console.error('Image generation failed:', error);
+            imageOutput.innerHTML = `<div class="error">Error: ${error.message}</div>`;
         } finally {
-            generateButton.disabled = false;
-            generateButton.textContent = 'Generate';
+            generateBtn.disabled = false;
+            generateBtn.textContent = 'Generate Image';
         }
     }
     
-    function saveImageToHistory(prompt, imageUrl, style) {
-        const historyItem = {
-            prompt,
-            imageUrl,
-            style,
-            timestamp: new Date().toISOString()
-        };
-        
-        // Get existing history
-        let history = loadFromLocalStorage('imageHistory') || [];
-        
-        // Add new item
-        history.unshift(historyItem);
-        
-        // Save (limit to 50 items)
-        saveToLocalStorage('imageHistory', history.slice(0, 50));
-        
-        // Update history display
-        updateImageHistoryDisplay();
+    // Save to history
+    function saveToHistory(item) {
+        let history = JSON.parse(localStorage.getItem('wayne-ai_imageHistory') || '[]');
+        history.unshift(item);
+        localStorage.setItem('wayne-ai_imageHistory', JSON.stringify(history.slice(0, 50)));
+        updateHistoryDisplay();
     }
     
-    function updateImageHistoryDisplay() {
-        const historyList = document.getElementById('imageHistoryList');
-        if (!historyList) return;
-        
-        const history = loadFromLocalStorage('imageHistory') || [];
-        
+    // Update history display
+    function updateHistoryDisplay() {
+        const history = JSON.parse(localStorage.getItem('wayne-ai_imageHistory') || '[]');
         historyList.innerHTML = '';
         
-        history.forEach(item => {
-            const itemElement = document.createElement('div');
-            itemElement.classList.add('history-item');
-            itemElement.innerHTML = `
-                <p><strong>${item.prompt.substring(0, 50)}${item.prompt.length > 50 ? '...' : ''}</strong></p>
-                <small>${new Date(item.timestamp).toLocaleString()}</small>
+        history.forEach((item, index) => {
+            const historyItem = document.createElement('div');
+            historyItem.className = 'history-item';
+            historyItem.innerHTML = `
+                <div class="preview">
+                    <img src="${item.imageUrl}" alt="${item.prompt.substring(0, 30)}" loading="lazy">
+                </div>
+                <div class="details">
+                    <p>${item.prompt.substring(0, 50)}${item.prompt.length > 50 ? '...' : ''}</p>
+                    <small>${item.model} • ${new Date(item.timestamp).toLocaleString()}</small>
+                </div>
+                <button class="delete" data-index="${index}">×</button>
             `;
             
-            itemElement.addEventListener('click', () => {
-                // When clicked, show this image in the main area
-                imageOutput.innerHTML = '';
-                const img = document.createElement('img');
-                img.src = item.imageUrl;
-                img.alt = item.prompt;
-                img.classList.add('generated-image');
-                imageOutput.appendChild(img);
-                
-                // Update the prompt input
-                imagePrompt.value = item.prompt;
-                imageStyle.value = item.style;
+            historyItem.addEventListener('click', () => {
+                imageOutput.innerHTML = `<img src="${item.imageUrl}" class="generated-image" alt="${item.prompt}">`;
+                promptInput.value = item.prompt;
+                styleSelect.value = item.style;
+                sizeSelect.value = item.size;
             });
             
-            historyList.appendChild(itemElement);
+            historyList.appendChild(historyItem);
+        });
+        
+        // Add delete handlers
+        document.querySelectorAll('.history-item .delete').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                deleteHistoryItem(parseInt(this.dataset.index));
+            });
         });
     }
     
-    // Load history on page load
-    updateImageHistoryDisplay();
+    // Delete history item
+    function deleteHistoryItem(index) {
+        let history = JSON.parse(localStorage.getItem('wayne-ai_imageHistory') || '[]');
+        history.splice(index, 1);
+        localStorage.setItem('wayne-ai_imageHistory', JSON.stringify(history));
+        updateHistoryDisplay();
+    }
+    
+    // Initialize
+    initModelSelector();
+    updateHistoryDisplay();
+    generateBtn.addEventListener('click', generateImage);
 });
