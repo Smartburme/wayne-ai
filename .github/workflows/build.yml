@@ -1,0 +1,24 @@
+name: Build and Deploy
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Inject API keys
+      run: |
+        sed -i "s|window.__GEMINI_API_KEY|'${{ secrets.GEMINI_API_KEY }}'|g" js/env.js
+        sed -i "s|window.__OPENAI_API_KEY|'${{ secrets.OPENAI_API_KEY }}'|g" js/env.js
+        sed -i "s|window.__STABILITY_API_KEY|'${{ secrets.STABILITY_API_KEY }}'|g" js/env.js
+        
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./
