@@ -1,0 +1,90 @@
+/* Dashboard Styles */
+.dashboard {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.ai-assistant {
+    margin-bottom: 2rem;
+}
+
+.chat-container {
+    background-color: var(--nero-secondary);
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.chat-history {
+    height: 400px;
+    overflow-y: auto;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background-color: var(--nero-accent);
+    border-radius: 4px;
+}
+
+.input-area {
+    display: flex;
+    gap: 1rem;
+}
+
+.input-area input {
+    flex: 1;
+}
+
+.quick-generators h2 {
+    margin-bottom: 1.5rem;
+    color: var(--ai-blue);
+}
+
+.generator-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.generator-card {
+    background-color: var(--nero-secondary);
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+    text-decoration: none;
+    color: var(--nero-text);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.generator-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.generator-card img {
+    height: 60px;
+    width: auto;
+    margin-bottom: 1rem;
+}
+
+.generator-card h3 {
+    font-size: 1.2rem;
+}
+
+/* Message Styles */
+.message {
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.75rem;
+    border-radius: 6px;
+    max-width: 80%;
+}
+
+.user-message {
+    background-color: var(--nero-highlight);
+    align-self: flex-end;
+}
+
+.ai-message {
+    background-color: var(--nero-accent);
+    align-self: flex-start;
+}
