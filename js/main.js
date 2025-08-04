@@ -1,166 +1,99 @@
-// Enhanced Main Application Script
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize all pages
-    initNavigation();
-    initDarkModeToggle();
-    initAPIStatusDisplay();
+document.addEventListener('DOMContentLoaded', () => {
+    // Theme Toggle
+    const themeToggle = document.getElementById('themeToggle');
+    const savedTheme = localStorage.getItem('theme') || 'dark';
     
-    // Page-specific initializations
-    if (document.querySelector('.dashboard')) {
-        initDashboard();
-    }
+    // Apply saved theme
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    themeToggle.textContent = savedTheme === 'dark' ? 'Light Mode' : 'Dark Mode';
     
-    if (document.querySelector('.generation-container')) {
-        initGenerationPage();
-    }
-});
-
-function initNavigation() {
-    // Mobile menu toggle
-    const mobileMenuToggle = document.getElementById('mobileMenuToggle');
-    const navMenu = document.querySelector('nav ul');
-    
-    if (mobileMenuToggle && navMenu) {
-        mobileMenuToggle.addEventListener('click', function() {
-            navMenu.classList.toggle('active');
-            mobileMenuToggle.classList.toggle('active');
-        });
-    }
-}
-
-function initDarkModeToggle() {
-    // Dark mode is default in Nero theme
-    const darkModeToggle = document.getElementById('darkModeToggle');
-    
-    if (darkModeToggle) {
-        darkModeToggle.addEventListener('click', function() {
-            document.body.classList.toggle('nero-theme');
-            document.body.classList.toggle('light-theme');
-            
-            // Save preference
-            const isDark = document.body.classList.contains('nero-theme');
-            localStorage.setItem('wayne-ai_themePreference', isDark ? 'dark' : 'light');
-        });
+    themeToggle.addEventListener('click', () => {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
         
-        // Load saved preference
-        const savedTheme = localStorage.getItem('wayne-ai_themePreference') || 'dark';
-        if (savedTheme === 'light') {
-            document.body.classList.remove('nero-theme');
-            document.body.classList.add('light-theme');
-        }
-    }
-}
-
-function initAPIStatusDisplay() {
-    // Display API status in footer
-    const status = ai.getApiStatus();
-    const footer = document.querySelector('footer');
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        themeToggle.textContent = newTheme === 'dark' ? 'Light Mode' : 'Dark Mode';
+    });
     
-    if (footer) {
-        const statusElement = document.createElement('div');
-        statusElement.className = 'api-status';
-        
-        statusElement.innerHTML = `
-            <span class="${status.gemini.enabled ? 'active' : 'inactive'}">Gemini</span>
-            <span class="${status.openai.enabled ? 'active' : 'inactive'}">OpenAI</span>
-            <span class="${status.stability.enabled ? 'active' : 'inactive'}">Stability</span>
-        `;
-        
-        footer.prepend(statusElement);
-    }
-}
-
-function initDashboard() {
-    // Initialize main dashboard
-    const chatInput = document.getElementById('userInput');
+    // Chat functionality
+    const chatHistory = document.getElementById('chatHistory');
+    const userInput = document.getElementById('userInput');
     const sendButton = document.getElementById('sendButton');
     
-    if (chatInput && sendButton) {
-        sendButton.addEventListener('click', sendMessage);
-        chatInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                sendMessage();
-            }
-        });
+    function addMessageToHistory(role, content) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `${role}-message`;
+        
+        const avatar = document.createElement('img');
+        avatar.src = role === 'ai' ? 'assets/icons/ai-avatar.svg' : 'assets/icons/user-avatar.svg';
+        avatar.alt = `${role} avatar`;
+        
+        const messageContent = document.createElement('p');
+        messageContent.textContent = content;
+        
+        messageDiv.appendChild(avatar);
+        messageDiv.appendChild(messageContent);
+        chatHistory.appendChild(messageDiv);
+        
+        // Scroll to bottom
+        chatHistory.scrollTop = chatHistory.scrollHeight;
     }
     
-    // Initialize quick action cards
-    document.querySelectorAll('.generator-card').forEach(card => {
-        card.addEventListener('click', function(e) {
-            if (this.getAttribute('href') === '#') {
-                e.preventDefault();
-                alert('Please select an AI model first');
-            }
-        });
-    });
-}
-
-function initGenerationPage() {
-    // Common generation page functionality
-    console.log('Generation page initialized');
-    
-    // Check if any APIs are available
-    const status = ai.getApiStatus();
-    if (!status.gemini.enabled && !status.openai.enabled && !status.stability.enabled) {
-        alert('Warning: No AI APIs are currently configured');
-    }
-}
-
-async function sendMessage() {
-    const input = document.getElementById('userInput');
-    const message = input.value.trim();
-    
-    if (message) {
-        // Add to chat history
-        addMessageToChat('user', message);
-        input.value = '';
+    async function sendMessage() {
+        const message = userInput.value.trim();
+        if (!message) return;
+        
+        // Add user message to chat
+        addMessageToHistory('user', message);
+        userInput.value = '';
         
         try {
-            // Get AI response
-            const response = await ai.chat(message);
+            // Show loading indicator
+            const loadingDiv = document.createElement('div');
+            loadingDiv.className = 'ai-message loading';
+            loadingDiv.innerHTML = `
+                <img src="assets/icons/ai-avatar.svg" alt="AI Avatar">
+                <div class="loading-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            `;
+            chatHistory.appendChild(loadingDiv);
+            chatHistory.scrollTop = chatHistory.scrollHeight;
             
-            // Add AI response
-            addMessageToChat('ai', response.content);
+            // Get AI response
+            const response = await getAIResponse(message);
+            
+            // Remove loading and add response
+            chatHistory.removeChild(loadingDiv);
+            addMessageToHistory('ai', response);
         } catch (error) {
-            console.error('Chat failed:', error);
-            addMessageToChat('ai', "I'm having trouble responding right now. Please try again later.");
+            console.error('Error getting AI response:', error);
+            addMessageToHistory('ai', 'Sorry, I encountered an error. Please try again.');
         }
     }
-}
-
-function addMessageToChat(sender, text) {
-    const chatHistory = document.getElementById('chatHistory');
-    if (!chatHistory) return;
     
-    const messageDiv = document.createElement('div');
-    messageDiv.classList.add('message', `${sender}-message`);
-    messageDiv.textContent = text;
+    sendButton.addEventListener('click', sendMessage);
+    userInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            sendMessage();
+        }
+    });
     
-    chatHistory.appendChild(messageDiv);
-    chatHistory.scrollTop = chatHistory.scrollHeight;
+    // Initialize other components
+    initializeQuickActions();
+});
+
+function initializeQuickActions() {
+    // Add any quick action initialization here
+    console.log('Quick actions initialized');
 }
 
-// Utility function to save to localStorage
-function saveToLocalStorage(key, data) {
-    try {
-        localStorage.setItem(`wayne-ai_${key}`, JSON.stringify(data));
-        return true;
-    } catch (e) {
-        console.error('Error saving to localStorage:', e);
-        return false;
-    }
+// This would be implemented in gemini.js
+async function getAIResponse(prompt) {
+    // Placeholder - actual implementation will use Gemini API
+    return "This is a simulated response. In the actual implementation, this will call the Gemini API.";
 }
-
-// Utility function to load from localStorage
-function loadFromLocalStorage(key) {
-    try {
-        const data = localStorage.getItem(`wayne-ai_${key}`);
-        return data ? JSON.parse(data) : null;
-    } catch (e) {
-        console.error('Error loading from localStorage:', e);
-        return null;
-    }
-}
-
-// Initialize AI handler
-window.ai = new AIHandler();
