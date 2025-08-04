@@ -3,128 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wayne-AI Chat</title>
+    <title>Wayne-AI | Dashboard</title>
     <link rel="stylesheet" href="../css/main.css">
-    <style>
-        /* Additional inline styles for precise icon sizing */
-        .app-logo {
-            width: 42px;
-            height: 42px;
-        }
-        .nav-icon {
-            width: 22px;
-            height: 22px;
-        }
-        .action-icon {
-            width: 20px;
-            height: 20px;
-        }
-        .history-icon {
-            width: 18px;
-            height: 18px;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="main-container">
-        <!-- Header Section -->
+    <div class="app-container">
+        <!-- Header -->
         <header class="app-header">
             <div class="header-left">
-                <img src="../assets/images/ai-logo.png" alt="Wayne-AI Logo" class="app-logo">
+                <img src="../assets/images/ai-logo.png" alt="Wayne-AI Logo" class="logo">
                 <h1>Wayne-AI</h1>
             </div>
-            <button id="newChatBtn" class="new-chat-btn">
-                <span>+</span> New Chat
-            </button>
+            <div class="header-right">
+                <button id="theme-toggle" class="btn-icon" title="Toggle Theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
         </header>
 
-        <!-- Main Content Area -->
-        <div class="content-wrapper">
-            <!-- Chat History Sidebar -->
-            <aside class="history-sidebar" id="historySidebar">
-                <div class="history-header">
-                    <h3>Chat History</h3>
-                    <button id="clearHistoryBtn" class="icon-btn" title="Clear History">
-                        <img src="../assets/images/clear-icon.png" alt="Clear" class="history-icon">
+        <!-- Main Content -->
+        <main class="content-area">
+            <!-- Chat Section -->
+            <section class="chat-section">
+                <div class="chat-container">
+                    <div id="chat-messages" class="chat-messages">
+                        <div class="welcome-message">
+                            <img src="../assets/images/ai-logo.png" alt="Wayne-AI" class="bot-avatar">
+                            <div class="message-content">
+                                <h3>Welcome to Wayne-AI</h3>
+                                <p>I'm your AI assistant. How can I help you today?</p>
+                                <div class="quick-prompts">
+                                    <button class="quick-prompt">Explain quantum computing</button>
+                                    <button class="quick-prompt">Generate Python code</button>
+                                    <button class="quick-prompt">Create a marketing plan</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-input">
+                        <button id="attach-file" class="btn-icon" title="Attach File">
+                            <i class="fas fa-paperclip"></i>
+                        </button>
+                        <textarea id="user-input" placeholder="Type your message here..." rows="1"></textarea>
+                        <button id="send-message" class="btn-icon primary" title="Send">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Generator Panel -->
+            <aside class="generator-panel">
+                <div class="generator-header">
+                    <h3>AI Generators</h3>
+                    <button id="toggle-generator" class="btn-icon">
+                        <i class="fas fa-chevron-down"></i>
                     </button>
                 </div>
-                <div class="history-list" id="chatHistoryList">
-                    <!-- Dynamic content will be added here -->
-                    <div class="history-item active">
-                        <div class="history-preview">Welcome to Wayne-AI</div>
-                        <div class="history-time">Just now</div>
-                    </div>
-                </div>
-
-                <div class="history-header">
-                    <h3>Generate History</h3>
-                </div>
-                <div class="history-list" id="generateHistoryList">
-                    <!-- Dynamic content will be added here -->
-                    <div class="history-item">
-                        <div class="history-type">
-                            <img src="../assets/images/text-icon.png" alt="Text" class="history-icon">
-                        </div>
-                        <div class="history-preview">Sample text generation</div>
-                    </div>
+                <div class="generator-options">
+                    <button class="generator-option" onclick="navigateTo('text-gen')">
+                        <img src="../assets/images/text-icon.png" alt="Text">
+                        <span>Text Generator</span>
+                    </button>
+                    <button class="generator-option" onclick="navigateTo('image-gen')">
+                        <img src="../assets/images/image-icon.png" alt="Image">
+                        <span>Image Generator</span>
+                    </button>
+                    <button class="generator-option" onclick="navigateTo('code-gen')">
+                        <img src="../assets/images/code-icon.png" alt="Code">
+                        <span>Code Generator</span>
+                    </button>
                 </div>
             </aside>
+        </main>
 
-            <!-- Main Chat Area -->
-            <main class="chat-area">
-                <div class="chat-container" id="chatContainer">
-                    <!-- Welcome message -->
-                    <div class="chat-message bot-message">
-                        <div class="message-content">
-                            <div class="message-text">
-                                <h2>Welcome to Wayne-AI!</h2>
-                                <p>I'm your AI assistant. How can I help you today?</p>
-                                <p>You can ask me anything or try one of these:</p>
-                                <ul class="suggestions">
-                                    <li>"Explain quantum computing"</li>
-                                    <li>"Write a poem about Myanmar"</li>
-                                    <li>"Generate Python code for a calculator"</li>
-                                </ul>
-                            </div>
-                            <div class="message-time">Just now</div>
-                        </div>
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <button class="nav-btn active" data-target="chat">
+                <i class="fas fa-comment-dots"></i>
+                <span>Chat</span>
+            </button>
+            <button class="nav-btn" data-target="dashboard">
+                <i class="fas fa-chart-line"></i>
+                <span>Dashboard</span>
+            </button>
+            <button class="nav-btn" data-target="settings">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </button>
+        </nav>
+
+        <!-- Settings Panel -->
+        <div id="settings-panel" class="settings-panel">
+            <div class="settings-header">
+                <h3>Settings</h3>
+                <button id="close-settings" class="btn-icon">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="settings-content">
+                <div class="setting-group">
+                    <h4>AI Model</h4>
+                    <select id="ai-model">
+                        <option value="gemini-pro">Gemini Pro</option>
+                        <option value="gpt-4">GPT-4</option>
+                        <option value="claude-2">Claude 2</option>
+                    </select>
+                </div>
+                <div class="setting-group">
+                    <h4>Theme</h4>
+                    <div class="theme-options">
+                        <button data-theme="light" class="theme-option">
+                            <i class="fas fa-sun"></i> Light
+                        </button>
+                        <button data-theme="dark" class="theme-option active">
+                            <i class="fas fa-moon"></i> Dark
+                        </button>
+                        <button data-theme="system" class="theme-option">
+                            <i class="fas fa-desktop"></i> System
+                        </button>
                     </div>
                 </div>
-
-                <!-- Input Area -->
-                <div class="input-area">
-                    <button id="attachBtn" class="icon-btn" title="Attach File">
-                        <img src="../assets/images/attach-icon.png" alt="Attach" class="action-icon">
-                    </button>
-                    <input type="text" id="userInput" placeholder="Message Wayne-AI...">
-                    <button id="sendBtn" class="send-btn">
-                        <img src="../assets/images/send-icon.png" alt="Send" class="action-icon">
+                <div class="setting-group">
+                    <h4>Chat History</h4>
+                    <button id="clear-history" class="btn-secondary">
+                        <i class="fas fa-trash"></i> Clear Chat History
                     </button>
                 </div>
-            </main>
+            </div>
         </div>
-
-        <!-- Bottom Navigation Menu -->
-        <nav class="bottom-nav">
-            <a href="#" class="nav-item active" id="mainChatBtn">
-                <img src="../assets/images/chat-icon.png" alt="Chat" class="nav-icon">
-                <span>Chat</span>
-            </a>
-            <a href="../pages/text-gen.html" class="nav-item">
-                <img src="../assets/images/text-icon.png" alt="Text" class="nav-icon">
-                <span>Text</span>
-            </a>
-            <a href="../pages/image-gen.html" class="nav-item">
-                <img src="../assets/images/image-icon.png" alt="Image" class="nav-icon">
-                <span>Image</span>
-            </a>
-            <a href="../pages/code-gen.html" class="nav-item">
-                <img src="../assets/images/code-icon.png" alt="Code" class="nav-icon">
-                <span>Code</span>
-            </a>
-        </nav>
     </div>
 
     <script src="../js/main.js"></script>
+    <script src="../js/api.js"></script>
 </body>
-  </html>
+</html>
