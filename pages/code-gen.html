@@ -1,75 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
+<!-- pages/code-gen.html --><!DOCTYPE html><html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wayne-AI | Code Generation</title>
-    <link rel="stylesheet" href="../css/pages.css">
-    <link rel="icon" href="../assets/images/ai-logo.png" type="image/png">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WAYNE AI | Code Generator</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <script src="../js/code-gen.js" defer></script>
 </head>
-<body class="nero-theme">
-    <div class="app-container">
-        <header class="page-header">
-            <button class="back-btn" onclick="location.href='main.html'">
-                <img src="../assets/images/down-icon.png" alt="Back" class="icon-md">
-            </button>
-            <img src="../assets/images/ai-logo.png" alt="Wayne AI Logo" class="page-logo">
-            <h1>Code Generation</h1>
-        </header>
-
-        <main class="page-content">
-            <div class="generation-container">
-                <textarea id="code-prompt" placeholder="Describe the code you want to generate..."></textarea>
-                
-                <div class="code-options">
-                    <div class="option-group">
-                        <label for="language-select">Language:</label>
-                        <select id="language-select">
-                            <option value="python">Python</option>
-                            <option value="javascript">JavaScript</option>
-                            <option value="html">HTML</option>
-                            <option value="css">CSS</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <button id="generate-code-btn" class="generate-btn">
-                    <img src="../assets/images/gen-icon.png" alt="Generate" class="icon-md">
-                    <span>Generate Code</span>
-                </button>
-                
-                <div class="code-output-container">
-                    <div class="code-toolbar">
-                        <button class="copy-code-btn">
-                            <img src="../assets/images/copy-icon.png" alt="Copy" class="icon-sm">
-                            <span>Copy</span>
-                        </button>
-                        <button class="explain-code-btn">
-                            <img src="../assets/images/explain-icon.png" alt="Explain" class="icon-sm">
-                            <span>Explain</span>
-                        </button>
-                    </div>
-                    <pre id="code-output"><code>// Your generated code will appear here</code></pre>
-                </div>
-            </div>
-        </main>
-
-        <nav class="bottom-nav">
-            <button class="nav-btn" onclick="location.href='chat-bot.html'">
-                <img src="../assets/images/send-icon.png" alt="Chat" class="icon-md">
-            </button>
-            <button class="nav-btn" onclick="location.href='text-gen.html'">
-                <img src="../assets/images/text-icon.png" alt="Text" class="icon-md">
-            </button>
-            <button class="nav-btn active">
-                <img src="../assets/images/code-icon.png" alt="Code" class="icon-md">
-            </button>
-        </nav>
+<body class="code-generator">
+  <header class="topbar">
+    <img src="../assets/images/ai-logo-png" alt="WAYNE AI Logo" class="logo" />
+    <h1>Code Generator</h1>
+    <a href="../main.html" class="back-button">← Main</a>
+  </header>  <main class="generator-container">
+    <div class="generator-input">
+      <textarea id="codePrompt" placeholder="Describe what code you want..." rows="6"></textarea>
+      <button id="generateCodeBtn">
+        <img src="../assets/images/gen-icon.png" alt="Generate" /> Generate
+      </button>
+      <button id="clearCodeBtn">
+        <img src="../assets/images/clear-icon.png" alt="Clear" /> Clear
+      </button>
     </div>
-
-    <!-- Connected JavaScript Files -->
-    <script src="../js/env.js"></script>
-    <script src="../js/api.js"></script>
-    <script src="../js/code-gem.js"></script>
+    <div class="generator-output">
+      <h3>Generated Code:</h3>
+      <pre id="codeResult"></pre>
+    </div>
+  </main>  <footer class="site-menu">
+    <a href="text-gen.html"><img src="../assets/images/text-icon.png" alt="Text" /></a>
+    <a href="image-gen.html"><img src="../assets/images/image-icon.png" alt="Image" /></a>
+    <a href="code-gen.html"><img src="../assets/images/code-icon.png" alt="Code" class="active" /></a>
+    <a href="../main.html"><img src="../assets/images/down-icon.png" alt="Main" /></a>
+  </footer>
 </body>
 </html>
