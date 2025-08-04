@@ -1,78 +1,68 @@
-.page-container {
-    max-width: 800px;
+.settings-content {
+    padding: 1.5rem;
+    max-width: 600px;
     margin: 0 auto;
-    padding: 20px;
 }
 
-.settings-container {
-    background-color: white;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+.settings-section {
+    margin-bottom: 2rem;
 }
 
-.setting-group {
-    margin-bottom: 30px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid #eee;
+.settings-section h2 {
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--accent-color);
 }
 
-.setting-group:last-child {
-    border-bottom: none;
+.setting-option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.setting-group h2 {
-    margin-top: 0;
-    color: #4361ee;
-    font-size: 18px;
-}
-
-.setting-item {
-    margin-bottom: 15px;
-}
-
-.setting-item label {
-    display: block;
-    margin-bottom: 5px;
+.setting-option span {
     font-weight: 500;
 }
 
-.setting-item input, 
-.setting-item select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 16px;
+select {
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    background-color: var(--secondary-bg);
+    color: var(--text-color);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    outline: none;
+    min-width: 150px;
 }
 
-button {
-    padding: 10px 15px;
+.about-btn {
+    display: block;
+    width: 100%;
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    background-color: var(--secondary-bg);
+    color: var(--text-color);
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
+    text-align: left;
     cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s;
+    transition: background-color 0.2s ease;
 }
 
-.danger-btn {
-    background-color: #f72585;
-    color: white;
+.about-btn:hover {
+    background-color: rgba(255, 255, 255, 0.05);
 }
 
-.danger-btn:hover {
-    background-color: #d3166d;
-}
-
-.save-btn {
-    background-color: #4361ee;
-    color: white;
-    width: 100%;
-    padding: 12px;
-    font-size: 16px;
-    margin-top: 20px;
-}
-
-.save-btn:hover {
-    background-color: #3a56d4;
+@media (max-width: 480px) {
+    .setting-option {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    select {
+        width: 100%;
+    }
 }
