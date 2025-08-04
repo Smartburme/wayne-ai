@@ -1,3 +1,38 @@
+/* pages.css - Updated with logo and icon sizing */
+:root {
+    /* Theme variables */
+    --primary-bg: #121212;
+    --secondary-bg: #1e1e1e;
+    --accent-color: #bb86fc;
+    --text-color: #ffffff;
+    --text-muted: #aaaaaa;
+    
+    /* Logo sizing */
+    --logo-size-xs: 40px;
+    --logo-size-sm: 60px;
+    --logo-size-md: 80px;
+    --logo-size-lg: 100px;
+    
+    /* Icon sizing */
+    --icon-size-xs: 16px;
+    --icon-size-sm: 24px;
+    --icon-size-md: 32px;
+    --icon-size-lg: 48px;
+    --icon-size-xl: 64px;
+    
+    /* Button sizing */
+    --btn-icon-size: var(--icon-size-md);
+}
+
+.guardian-theme {
+    --primary-bg: #ffffff;
+    --secondary-bg: #f5f5f5;
+    --accent-color: #6200ee;
+    --text-color: #333333;
+    --text-muted: #666666;
+}
+
+/* Base styles */
 .page-header {
     display: flex;
     align-items: center;
@@ -9,16 +44,22 @@
     gap: 1rem;
 }
 
-.back-btn {
+.page-header .back-btn {
     background: none;
     border: none;
     cursor: pointer;
     padding: 0.5rem;
 }
 
-.back-btn img {
-    width: var(--icon-size-sm);
-    height: var(--icon-size-sm);
+.page-header .back-btn img {
+    width: var(--icon-size-md);
+    height: var(--icon-size-md);
+}
+
+.page-header .page-logo {
+    width: var(--logo-size-sm);
+    height: var(--logo-size-sm);
+    object-fit: contain;
 }
 
 .page-content {
@@ -27,12 +68,14 @@
     margin: 0 auto;
 }
 
+/* Generation container styles */
 .generation-container {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
 }
 
+/* Input and output areas */
 textarea {
     width: 100%;
     min-height: 120px;
@@ -51,6 +94,14 @@ textarea:focus {
     border-color: var(--accent-color);
 }
 
+.output-container {
+    background-color: var(--secondary-bg);
+    padding: 1.5rem;
+    border-radius: 12px;
+    min-height: 200px;
+}
+
+/* Button styles */
 .generate-btn {
     display: flex;
     align-items: center;
@@ -71,36 +122,30 @@ textarea:focus {
 }
 
 .generate-btn img {
-    width: 20px;
-    height: 20px;
+    width: var(--btn-icon-size);
+    height: var(--btn-icon-size);
 }
 
-.output-container {
-    background-color: var(--secondary-bg);
-    padding: 1.5rem;
-    border-radius: 12px;
-    min-height: 200px;
-    white-space: pre-wrap;
-}
-
-.image-options, .code-options {
+/* Type-specific styles */
+/* Image generation */
+.image-options {
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
 }
 
-.option-group {
+.image-option-group {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
 }
 
-.option-group label {
+.image-option-group label {
     font-size: 0.875rem;
     color: var(--text-muted);
 }
 
-.option-group select {
+.image-option-group select {
     padding: 0.5rem 1rem;
     border-radius: 8px;
     background-color: var(--secondary-bg);
@@ -109,22 +154,57 @@ textarea:focus {
     outline: none;
 }
 
-.image-output-container {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    align-items: center;
-}
-
 .generated-image {
     max-width: 100%;
+    max-height: 60vh;
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
-.image-actions {
+.image-placeholder {
+    width: 100%;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--secondary-bg);
+    border-radius: 12px;
+    color: var(--text-muted);
+}
+
+.image-placeholder img {
+    width: var(--icon-size-xl);
+    height: var(--icon-size-xl);
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+/* Code generation */
+.code-options {
     display: flex;
     gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.code-option-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.code-option-group label {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+}
+
+.code-option-group select {
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    background-color: var(--secondary-bg);
+    color: var(--text-color);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    outline: none;
 }
 
 .code-output-container {
@@ -139,7 +219,7 @@ textarea:focus {
     gap: 0.5rem;
 }
 
-.copy-code-btn, .explain-code-btn {
+.code-toolbar button {
     display: flex;
     align-items: center;
     gap: 0.25rem;
@@ -150,6 +230,11 @@ textarea:focus {
     border-radius: 4px;
     font-size: 0.75rem;
     cursor: pointer;
+}
+
+.code-toolbar button img {
+    width: var(--icon-size-sm);
+    height: var(--icon-size-sm);
 }
 
 pre {
@@ -164,41 +249,13 @@ pre {
     background-color: #f5f5f5;
 }
 
-.error-message {
-    color: #ff5252;
-    padding: 1rem;
-    background-color: rgba(255, 82, 82, 0.1);
-    border-radius: 8px;
-    text-align: center;
-}
-
-.retry-btn {
-    margin-top: 0.5rem;
-    padding: 0.5rem 1rem;
-    background-color: var(--accent-color);
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.spinner {
-    width: 20px;
-    height: 20px;
-    border: 3px solid rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    border-top-color: white;
-    animation: spin 1s ease-in-out infinite;
-    display: inline-block;
-    vertical-align: middle;
-    margin-right: 0.5rem;
-}
-
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
-
+/* Responsive adjustments */
 @media (max-width: 768px) {
+    :root {
+        --logo-size-sm: 50px;
+        --icon-size-md: 28px;
+    }
+    
     .page-content {
         padding: 1rem;
     }
@@ -207,4 +264,28 @@ pre {
         flex-direction: column;
         gap: 1rem;
     }
+    
+    .generate-btn {
+        padding: 0.75rem;
     }
+}
+
+@media (max-width: 480px) {
+    :root {
+        --logo-size-sm: 40px;
+        --icon-size-md: 24px;
+    }
+    
+    .page-header {
+        padding: 0.75rem;
+    }
+    
+    textarea {
+        min-height: 100px;
+        padding: 0.75rem;
+    }
+    
+    .output-container {
+        padding: 1rem;
+    }
+}
