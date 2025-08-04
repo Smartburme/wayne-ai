@@ -3,39 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Generation - Wayne-AI</title>
+    <title>Wayne-AI | Image Generator</title>
+    <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="../css/pages.css">
 </head>
 <body>
-    <div class="page-container">
-        <header>
-            <a href="../src/main.html" class="back-btn">← Back</a>
-            <h1>Image Generation</h1>
-        </header>
-        
-        <div class="content-area">
-            <textarea id="imagePrompt" placeholder="Describe the image you want to generate..."></textarea>
-            <div class="action-buttons">
-                <button id="generateImageBtn">
-                    <img src="../assets/images/gen-icon.png" alt="Generate">
-                    Generate
-                </button>
-                <button id="clearImageBtn">
-                    <img src="../assets/images/clear-icon.png" alt="Clear">
-                    Clear
-                </button>
-                <button id="downloadImageBtn">
-                    <img src="../assets/images/down-icon.png" alt="Download">
-                    Download
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-left">
+                <img src="../assets/images/image-icon.png" alt="Image Icon" class="page-icon">
+                <h1>Image Generator</h1>
+            </div>
+            <div class="header-right">
+                <button class="btn-back" onclick="navigateTo('main')">
+                    <i class="fas fa-arrow-left"></i> Back
                 </button>
             </div>
-            <div class="result-area" id="imageResult">
-                <!-- Generated images will appear here -->
-                <p class="placeholder-text">Your generated images will appear here</p>
+        </header>
+
+        <!-- Main Content -->
+        <main class="gen-container">
+            <div class="input-section">
+                <textarea id="image-prompt" placeholder="Describe the image you want to generate..."></textarea>
+                <div class="image-options">
+                    <div class="option-group">
+                        <label for="image-style">Style:</label>
+                        <select id="image-style">
+                            <option value="realistic">Realistic</option>
+                            <option value="cartoon">Cartoon</option>
+                            <option value="anime">Anime</option>
+                            <option value="painting">Painting</option>
+                        </select>
+                    </div>
+                    <div class="option-group">
+                        <label for="image-quality">Quality:</label>
+                        <select id="image-quality">
+                            <option value="standard">Standard</option>
+                            <option value="hd">HD</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="action-buttons">
+                    <button id="clear-image" class="btn-icon" title="Clear">
+                        <img src="../assets/images/clear-icon.png" alt="Clear">
+                    </button>
+                    <button id="generate-image" class="btn-primary">
+                        <img src="../assets/images/gen-icon.png" alt="Generate"> Generate
+                    </button>
+                </div>
+            </div>
+            
+            <div class="output-section">
+                <div class="output-header">
+                    <h3>Generated Image</h3>
+                    <div class="output-actions">
+                        <button id="download-image" class="btn-icon" title="Download">
+                            <img src="../assets/images/down-icon.png" alt="Download">
+                        </button>
+                    </div>
+                </div>
+                <div id="image-output" class="output-content">
+                    <div class="image-placeholder">
+                        <i class="fas fa-image"></i>
+                        <p>Your generated image will appear here</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Model Selection -->
+        <div class="model-selector">
+            <select id="image-model">
+                <option value="dall-e-3">DALL-E 3</option>
+                <option value="stable-diffusion">Stable Diffusion</option>
+                <option value="midjourney">Midjourney</option>
+            </select>
+            <div class="model-info">
+                <span id="model-status">Ready</span>
+                <span id="credits-remaining">100 credits</span>
             </div>
         </div>
     </div>
-    
+
     <script src="../js/pages.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </body>
 </html>
