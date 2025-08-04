@@ -3,55 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Settings - Wayne-AI</title>
+    <title>Wayne-AI | Settings</title>
     <link rel="stylesheet" href="../css/setting.css">
+    <link rel="icon" href="../assets/images/ai-logo.png">
 </head>
-<body>
-    <div class="page-container">
-        <header>
-            <a href="../src/main.html" class="back-btn">← Back</a>
+<body class="nero-theme">
+    <div class="app-container">
+        <header class="page-header">
+            <button class="back-btn" onclick="location.href='main.html'">
+                <img src="../assets/images/down-icon.png" alt="Back">
+            </button>
             <h1>Settings</h1>
         </header>
-        
-        <div class="settings-container">
-            <div class="setting-group">
-                <h2>API Configuration</h2>
-                <div class="setting-item">
-                    <label for="geminiKey">Gemini API Key</label>
-                    <input type="password" id="geminiKey" placeholder="Enter your Gemini API key">
-                </div>
-                <div class="setting-item">
-                    <label for="openaiKey">OpenAI API Key</label>
-                    <input type="password" id="openaiKey" placeholder="Enter your OpenAI API key">
-                </div>
-            </div>
-            
-            <div class="setting-group">
+
+        <main class="settings-content">
+            <div class="settings-section">
                 <h2>Appearance</h2>
-                <div class="setting-item">
-                    <label for="themeSelect">Theme</label>
-                    <select id="themeSelect">
-                        <option value="light">Light</option>
-                        <option value="dark">Dark</option>
-                        <option value="system">System Default</option>
+                <div class="setting-option">
+                    <span>Theme</span>
+                    <select id="theme-selector">
+                        <option value="nero">Nero (Dark)</option>
+                        <option value="guardian">Guardian (Light)</option>
                     </select>
                 </div>
             </div>
-            
-            <div class="setting-group">
-                <h2>Data</h2>
-                <div class="setting-item">
-                    <button id="clearHistoryBtn" class="danger-btn">Clear Chat History</button>
-                </div>
-                <div class="setting-item">
-                    <button id="exportDataBtn">Export All Data</button>
+
+            <div class="settings-section">
+                <h2>AI Provider</h2>
+                <div class="setting-option">
+                    <span>Default Provider</span>
+                    <select id="ai-provider-selector">
+                        <option value="gemini">Gemini</option>
+                        <option value="openai">OpenAI</option>
+                    </select>
                 </div>
             </div>
-            
-            <button id="saveSettingsBtn" class="save-btn">Save Settings</button>
-        </div>
+
+            <div class="settings-section">
+                <h2>About</h2>
+                <button onclick="location.href='about.html'" class="about-btn">
+                    About Wayne-AI
+                </button>
+                <button onclick="location.href='future.html'" class="about-btn">
+                    Future Updates
+                </button>
+            </div>
+        </main>
     </div>
-    
     <script src="../js/setting.js"></script>
 </body>
 </html>
