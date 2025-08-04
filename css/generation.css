@@ -1,0 +1,152 @@
+/* Generation Page Styles */
+.generation-container {
+    display: flex;
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+    gap: 2rem;
+}
+
+.generation-history {
+    flex: 1;
+    max-width: 300px;
+}
+
+.history-list {
+    background-color: var(--nero-secondary);
+    border-radius: 8px;
+    padding: 1rem;
+    height: calc(100vh - 200px);
+    overflow-y: auto;
+}
+
+.history-item {
+    padding: 0.75rem;
+    margin-bottom: 0.75rem;
+    background-color: var(--nero-accent);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.history-item:hover {
+    background-color: var(--nero-highlight);
+}
+
+.generation-area {
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Chat Interface */
+.chat-interface {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 200px);
+}
+
+.messages {
+    flex: 1;
+    overflow-y: auto;
+    background-color: var(--nero-secondary);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.chat-controls {
+    display: flex;
+    gap: 1rem;
+}
+
+.chat-controls textarea {
+    flex: 1;
+    min-height: 80px;
+    resize: vertical;
+}
+
+/* Text Generation */
+.text-options {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.text-options select {
+    max-width: 150px;
+}
+
+.text-output {
+    background-color: var(--nero-secondary);
+    border-radius: 8px;
+    padding: 1.5rem;
+    min-height: 300px;
+    white-space: pre-wrap;
+}
+
+/* Image Generation */
+.image-options {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.style-options {
+    display: flex;
+    gap: 1rem;
+}
+
+.style-options select {
+    max-width: 200px;
+}
+
+.image-output {
+    background-color: var(--nero-secondary);
+    border-radius: 8px;
+    padding: 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+}
+
+.generated-image {
+    width: 100%;
+    border-radius: 4px;
+    border: 1px solid var(--nero-border);
+}
+
+/* Code Generation */
+.code-options {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.code-options select {
+    max-width: 200px;
+}
+
+.code-output {
+    display: flex;
+    gap: 2rem;
+}
+
+.code-output pre {
+    flex: 1;
+    background-color: var(--nero-secondary);
+    border-radius: 8px;
+    padding: 1.5rem;
+    overflow-x: auto;
+}
+
+.code-explanation {
+    flex: 1;
+    background-color: var(--nero-secondary);
+    border-radius: 8px;
+    padding: 1.5rem;
+}
