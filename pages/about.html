@@ -3,59 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About - Wayne-AI</title>
+    <title>Wayne-AI | About</title>
     <link rel="stylesheet" href="../css/about.css">
+    <link rel="icon" href="../assets/images/ai-logo.png">
 </head>
-<body>
-    <div class="page-container">
-        <header>
-            <a href="../src/main.html" class="back-btn">← Back</a>
+<body class="nero-theme">
+    <div class="app-container">
+        <header class="page-header">
+            <button class="back-btn" onclick="location.href='setting.html'">
+                <img src="../assets/images/down-icon.png" alt="Back">
+            </button>
             <h1>About Wayne-AI</h1>
         </header>
-        
-        <div class="about-content">
-            <div class="logo-section">
-                <img src="../assets/images/ai-logo.png" alt="Wayne-AI Logo">
-                <h2>Wayne-AI</h2>
-                <p class="version">Version 1.0.0</p>
+
+        <main class="about-content">
+            <div class="about-card">
+                <img src="../assets/images/ai-logo.png" alt="Wayne AI Logo" class="about-logo">
+                <h2>Wayne-AI v1.0</h2>
+                <p>Your personal AI assistant powered by multiple AI providers</p>
             </div>
             
             <div class="info-section">
-                <h3>About This Project</h3>
-                <p>Wayne-AI is an all-in-one AI assistant that provides text generation, image creation, and code generation capabilities using cutting-edge AI technologies.</p>
-                
                 <h3>Features</h3>
                 <ul>
-                    <li>Chat with AI assistant</li>
-                    <li>Generate high-quality text content</li>
-                    <li>Create images from text prompts</li>
-                    <li>Generate code in multiple programming languages</li>
-                    <li>Customizable settings</li>
+                    <li>AI Chat with conversation history</li>
+                    <li>Advanced text generation</li>
+                    <li>Image generation from text prompts</li>
+                    <li>Code generation in multiple languages</li>
+                    <li>Customizable interface (Nero/Guardian themes)</li>
                 </ul>
-                
-                <h3>Technologies Used</h3>
+            </div>
+            
+            <div class="info-section">
+                <h3>Technologies</h3>
                 <div class="tech-grid">
                     <div class="tech-item">
-                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML5">
-                        <span>HTML5</span>
+                        <img src="../assets/images/gen-icon.png" alt="Gemini">
+                        <span>Gemini API</span>
                     </div>
                     <div class="tech-item">
-                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS3">
-                        <span>CSS3</span>
+                        <img src="../assets/images/gen-icon.png" alt="OpenAI">
+                        <span>OpenAI API</span>
                     </div>
                     <div class="tech-item">
-                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript">
+                        <img src="../assets/images/code-icon.png" alt="JavaScript">
                         <span>JavaScript</span>
                     </div>
                 </div>
-                
-                <div class="developer-info">
-                    <h3>Developer</h3>
-                    <p>Developed by Smartburme</p>
-                    <p>GitHub: <a href="https://github.com/Smartburme" target="_blank">github.com/Smartburme</a></p>
-                </div>
             </div>
-        </div>
+            
+            <button onclick="location.href='future.html'" class="future-btn">
+                View Future Plans
+            </button>
+        </main>
     </div>
+    <script src="../js/about.js"></script>
 </body>
 </html>
