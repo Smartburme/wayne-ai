@@ -1,151 +1,56 @@
-<!DOCTYPE html>
-<html lang="en">
+<!-- index.html --><!DOCTYPE html><html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wayne-AI Loading</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1a1a2e, #16213e);
-            color: white;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-        }
-        
-        .loader-container {
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        .logo {
-            width: 80px;
-            height: 80px;
-            margin-bottom: 30px;
-            animation: pulse 2s infinite;
-        }
-        
-        .spring-text {
-            font-size: 3rem;
-            font-weight: bold;
-            margin-bottom: 30px;
-            background: linear-gradient(90deg, #4cc9f0, #4361ee);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        
-        .loading-bar {
-            width: 250px;
-            height: 8px;
-            background-color: rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            overflow: hidden;
-            margin-bottom: 20px;
-        }
-        
-        .progress {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, #4cc9f0, #4361ee);
-            border-radius: 10px;
-            animation: loading 2.5s ease-in-out forwards;
-        }
-        
-        .loading-text {
-            font-size: 1.2rem;
-            opacity: 0.8;
-            animation: fadeInOut 2s infinite;
-        }
-        
-        @keyframes loading {
-            0% { width: 0%; }
-            100% { width: 100%; }
-        }
-        
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-        
-        @keyframes fadeInOut {
-            0% { opacity: 0.6; }
-            50% { opacity: 1; }
-            100% { opacity: 0.6; }
-        }
-        
-        /* Spring animation for each letter */
-        .spring-text span {
-            display: inline-block;
-            animation: spring 0.5s ease-in-out;
-            animation-fill-mode: both;
-        }
-        
-        /* Different delays for each letter */
-        .spring-text span:nth-child(1) { animation-delay: 0.1s; }
-        .spring-text span:nth-child(2) { animation-delay: 0.2s; }
-        .spring-text span:nth-child(3) { animation-delay: 0.3s; }
-        .spring-text span:nth-child(4) { animation-delay: 0.4s; }
-        .spring-text span:nth-child(5) { animation-delay: 0.5s; }
-        .spring-text span:nth-child(6) { animation-delay: 0.6s; }
-        .spring-text span:nth-child(7) { animation-delay: 0.7s; }
-        
-        @keyframes spring {
-            0% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-20px) scale(1.2); }
-            100% { transform: translateY(0) scale(1); }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WAYNE AI Loader</title>
+  <link rel="icon" type="image/png" href="assets/images/ai-logo.png">
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: black;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+    .loader {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: white;
+      letter-spacing: 0.5rem;
+      display: flex;
+    }
+    .loader span {
+      display: inline-block;
+      animation: glow 2s infinite, rotate 4s linear infinite;
+      margin: 0 4px;
+    }
+    .loader span:nth-child(odd) {
+      animation-delay: 0.2s;
+    }
+    @keyframes glow {
+      0%, 100% { color: #00ffff; text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff; }
+      50% { color: #ffffff; text-shadow: 0 0 10px #ffffff, 0 0 20px #00ffff; }
+    }
+    @keyframes rotate {
+      0% { transform: rotateY(0deg); }
+      100% { transform: rotateY(360deg); }
+    }
+  </style>
 </head>
 <body>
-    <div class="loader-container">
-        <img src="assets/images/ai-logo.png" alt="Wayne-AI Logo" class="logo">
-        
-        <div class="spring-text">
-            <span>W</span>
-            <span>a</span>
-            <span>y</span>
-            <span>n</span>
-            <span>e</span>
-            <span>-</span>
-            <span>A</span>
-            <span>I</span>
-        </div>
-        
-        <div class="loading-bar">
-            <div class="progress"></div>
-        </div>
-        
-        <p class="loading-text">Initializing AI superpowers...</p>
-    </div>
-
-    <script>
-        // Redirect after animation completes
-        setTimeout(function() {
-            window.location.href = 'pages/main.html';
-        }, 3500); // Matches the duration of animations
-        
-        // Add spring animation to letters on load
-        document.addEventListener('DOMContentLoaded', function() {
-            const letters = document.querySelectorAll('.spring-text span');
-            letters.forEach((letter, index) => {
-                // Restart animation for each letter
-                setTimeout(() => {
-                    letter.style.animation = 'none';
-                    void letter.offsetWidth; // Trigger reflow
-                    letter.style.animation = 'spring 0.5s ease-in-out';
-                }, 1000 + (index * 100));
-            });
-        });
-    </script>
+  <div class="loader">
+    <span>W</span>
+    <span>A</span>
+    <span>Y</span>
+    <span>N</span>
+    <span>E</span>
+  </div>
+  <script>
+    setTimeout(() => {
+      window.location.href = "main.html";
+    }, 3000);
+  </script>
 </body>
 </html>
