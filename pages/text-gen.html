@@ -1,51 +1,73 @@
-<!DOCTYPE html>
-<html lang="en">
+<!-- pages/text-gen.html --><!DOCTYPE html><html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wayne-AI | Text Generation</title>
-    <link rel="stylesheet" href="../css/pages.css">
-    <link rel="icon" href="../assets/images/ai-logo.png" type="image/png">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Text Generator - WAYNE AI</title>
+  <link rel="stylesheet" href="../css/style.css" />
 </head>
-<body class="nero-theme">
-    <div class="app-container">
-        <header class="page-header">
-            <button class="back-btn" onclick="location.href='main.html'">
-                <img src="../assets/images/down-icon.png" alt="Back" class="icon-md">
-            </button>
-            <img src="../assets/images/ai-logo.png" alt="Wayne AI Logo" class="page-logo">
-            <h1>Text Generation</h1>
-        </header>
-
-        <main class="page-content">
-            <div class="generation-container">
-                <textarea id="text-prompt" placeholder="Enter your text prompt here..."></textarea>
-                <button id="generate-text-btn" class="generate-btn">
-                    <img src="../assets/images/gen-icon.png" alt="Generate" class="icon-md">
-                    <span>Generate Text</span>
-                </button>
-                <div id="text-output" class="output-container">
-                    <!-- Generated text will appear here -->
-                </div>
-            </div>
-        </main>
-
-        <nav class="bottom-nav">
-            <button class="nav-btn" onclick="location.href='chat-bot.html'">
-                <img src="../assets/images/send-icon.png" alt="Chat" class="icon-md">
-            </button>
-            <button class="nav-btn active">
-                <img src="../assets/images/text-icon.png" alt="Text" class="icon-md">
-            </button>
-            <button class="nav-btn" onclick="location.href='setting.html'">
-                <img src="../assets/images/settings-icon.png" alt="Settings" class="icon-md">
-            </button>
-        </nav>
+<body class="text-generator-page">
+  <header>
+    <div class="top-bar">
+      <a href="main.html" class="back">⬅</a>
+      <h1><img src="../assets/images/text-icon.png" alt="text" class="icon" /> Text Generator</h1>
     </div>
+  </header>  <main>
+    <section class="gen-section">
+      <textarea id="textPrompt" placeholder="Enter your prompt here..."></textarea>
+      <button id="genTextBtn">
+        <img src="../assets/images/gen-icon.png" class="icon" alt="Generate" /> Generate
+      </button>
+    </section><section class="output-section">
+  <div id="textOutput" class="output-box">Your AI-generated text will appear here.</div>
+</section>
 
-    <!-- Connected JavaScript Files -->
-    <script src="../js/env.js"></script>
-    <script src="../js/api.js"></script>
-    <script src="../js/text-gen.js"></script>
-</body>
+  </main>  <script src="../js/text-gen.js"></script></body>
+</html><!-- pages/image-gen.html --><!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Image Generator - WAYNE AI</title>
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body class="image-generator-page">
+  <header>
+    <div class="top-bar">
+      <a href="main.html" class="back">⬅</a>
+      <h1><img src="../assets/images/image-icon.png" alt="image" class="icon" /> Image Generator</h1>
+    </div>
+  </header>  <main>
+    <section class="gen-section">
+      <textarea id="imagePrompt" placeholder="Describe an image..."></textarea>
+      <button id="genImageBtn">
+        <img src="../assets/images/gen-icon.png" class="icon" alt="Generate" /> Generate
+      </button>
+    </section><section class="output-section">
+  <div id="imageOutput" class="image-output-box">Image will appear here.</div>
+</section>
+
+  </main>  <script src="../js/image-gen.js"></script></body>
+</html><!-- pages/code-gen.html --><!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Code Generator - WAYNE AI</title>
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body class="code-generator-page">
+  <header>
+    <div class="top-bar">
+      <a href="main.html" class="back">⬅</a>
+      <h1><img src="../assets/images/code-icon.png" alt="code" class="icon" /> Code Generator</h1>
+    </div>
+  </header>  <main>
+    <section class="gen-section">
+      <textarea id="codePrompt" placeholder="What code would you like to generate?"></textarea>
+      <button id="genCodeBtn">
+        <img src="../assets/images/gen-icon.png" class="icon" alt="Generate" /> Generate
+      </button>
+    </section><section class="output-section">
+  <pre id="codeOutput" class="output-box">Generated code will appear here.</pre>
+</section>
+
+  </main>  <script src="../js/code-gen.js"></script></body>
 </html>
