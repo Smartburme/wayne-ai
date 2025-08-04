@@ -3,96 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wayne-AI | Code Generator</title>
-    <link rel="stylesheet" href="../css/main.css">
+    <title>Wayne-AI | Code Generation</title>
     <link rel="stylesheet" href="../css/pages.css">
+    <link rel="icon" href="../assets/images/ai-logo.png">
 </head>
-<body>
+<body class="nero-theme">
     <div class="app-container">
-        <!-- Header -->
-        <header class="app-header">
-            <div class="header-left">
-                <img src="../assets/images/code-icon.png" alt="Code Icon" class="page-icon">
-                <h1>Code Generator</h1>
-            </div>
-            <div class="header-right">
-                <button class="btn-back" onclick="navigateTo('main')">
-                    <i class="fas fa-arrow-left"></i> Back
-                </button>
-            </div>
+        <header class="page-header">
+            <button class="back-btn" onclick="location.href='main.html'">
+                <img src="../assets/images/down-icon.png" alt="Back">
+            </button>
+            <h1>Code Generation</h1>
         </header>
 
-        <!-- Main Content -->
-        <main class="gen-container">
-            <div class="input-section">
+        <main class="page-content">
+            <div class="generation-container">
                 <textarea id="code-prompt" placeholder="Describe the code you want to generate..."></textarea>
+                
                 <div class="code-options">
                     <div class="option-group">
-                        <label for="code-language">Language:</label>
-                        <select id="code-language">
+                        <label for="language-select">Language:</label>
+                        <select id="language-select">
                             <option value="python">Python</option>
                             <option value="javascript">JavaScript</option>
-                            <option value="java">Java</option>
-                            <option value="csharp">C#</option>
-                            <option value="php">PHP</option>
                             <option value="html">HTML</option>
                             <option value="css">CSS</option>
-                        </select>
-                    </div>
-                    <div class="option-group">
-                        <label for="code-framework">Framework:</label>
-                        <select id="code-framework">
-                            <option value="none">None</option>
-                            <option value="react">React</option>
-                            <option value="vue">Vue</option>
-                            <option value="django">Django</option>
-                            <option value="flask">Flask</option>
+                            <option value="java">Java</option>
+                            <option value="csharp">C#</option>
                         </select>
                     </div>
                 </div>
-                <div class="action-buttons">
-                    <button id="clear-code" class="btn-icon" title="Clear">
-                        <img src="../assets/images/clear-icon.png" alt="Clear">
-                    </button>
-                    <button id="generate-code" class="btn-primary">
-                        <img src="../assets/images/gen-icon.png" alt="Generate"> Generate
-                    </button>
-                </div>
-            </div>
-            
-            <div class="output-section">
-                <div class="output-header">
-                    <h3>Generated Code</h3>
-                    <div class="output-actions">
-                        <button id="copy-code" class="btn-icon" title="Copy">
-                            <i class="fas fa-copy"></i>
+                
+                <button id="generate-code-btn" class="generate-btn">
+                    <img src="../assets/images/gen-icon.png" alt="Generate">
+                    <span>Generate Code</span>
+                </button>
+                
+                <div class="code-output-container">
+                    <div class="code-toolbar">
+                        <button class="copy-code-btn">
+                            <img src="../assets/images/attach-icon.png" alt="Copy">
+                            <span>Copy</span>
                         </button>
-                        <button id="download-code" class="btn-icon" title="Download">
-                            <img src="../assets/images/down-icon.png" alt="Download">
+                        <button class="explain-code-btn">
+                            <img src="../assets/images/send-icon.png" alt="Explain">
+                            <span>Explain</span>
                         </button>
                     </div>
+                    <pre id="code-output"><code>// Your generated code will appear here</code></pre>
                 </div>
-                <pre id="code-output" class="output-content"><code class="language-javascript">// Your generated code will appear here</code></pre>
             </div>
         </main>
 
-        <!-- Model Selection -->
-        <div class="model-selector">
-            <select id="code-model">
-                <option value="gemini-code">Gemini Code</option>
-                <option value="gpt-4-code">GPT-4 Code</option>
-                <option value="claude-code">Claude Code</option>
-            </select>
-            <div class="model-info">
-                <span id="model-status">Ready</span>
-                <span id="token-count">0 tokens</span>
-            </div>
-        </div>
+        <nav class="bottom-nav">
+            <button class="nav-btn" onclick="location.href='main.html'">
+                <img src="../assets/images/gen-icon.png" alt="Home">
+            </button>
+            <button class="nav-btn" onclick="location.href='chat-bot.html'">
+                <img src="../assets/images/send-icon.png" alt="Chat">
+            </button>
+            <button class="nav-btn" onclick="location.href='setting.html'">
+                <img src="../assets/images/clear-icon.png" alt="Settings">
+            </button>
+        </nav>
     </div>
-
     <script src="../js/pages.js"></script>
-    <script src="../js/api.js"></script>
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
 </body>
 </html>
