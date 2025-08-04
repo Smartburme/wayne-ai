@@ -13,14 +13,20 @@
         <div class="logo-container">
             <img src="assets/icons/logo.svg" alt="Wayne-AI Logo" class="logo">
             <h1>Wayne-AI</h1>
+            <div class="api-status">
+                <span class="active" id="openai-status">OpenAI</span>
+                <span class="active" id="gemini-status">Gemini</span>
+                <span class="inactive" id="stability-status">Stability</span>
+            </div>
         </div>
         <nav>
+            <button class="mobile-menu-toggle">☰</button>
             <ul>
-                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="index.html" class="active">Dashboard</a></li>
                 <li><a href="chat.html">Chat</a></li>
-                <li><a href="text-gen.html">Text</a></li>
-                <li><a href="image-gen.html">Image</a></li>
-                <li><a href="code-gen.html">Code</a></li>
+                <li><a href="text-gen.html">Text Generator</a></li>
+                <li><a href="image-gen.html">Image Generator</a></li>
+                <li><a href="code-gen.html">Code Generator</a></li>
                 <li><a href="about.html">About</a></li>
             </ul>
         </nav>
@@ -28,45 +34,80 @@
 
     <main class="dashboard">
         <section class="ai-assistant">
+            <h2>AI Assistant</h2>
             <div class="chat-container">
                 <div class="chat-history" id="chatHistory">
-                    <!-- Messages will appear here -->
+                    <div class="welcome-message">
+                        <h3>Welcome to Wayne-AI</h3>
+                        <p>I'm your AI assistant. How can I help you today?</p>
+                        <div class="quick-prompts">
+                            <button class="prompt-btn" data-prompt="Write a professional email">Email</button>
+                            <button class="prompt-btn" data-prompt="Explain quantum computing">Explain</button>
+                            <button class="prompt-btn" data-prompt="Generate Python code for a calculator">Code</button>
+                        </div>
+                    </div>
                 </div>
                 <div class="input-area">
                     <input type="text" id="userInput" placeholder="Ask Wayne-AI anything...">
-                    <button id="sendButton">Send</button>
+                    <button id="sendButton" class="primary">
+                        <img src="assets/icons/send.svg" alt="Send">
+                    </button>
                 </div>
             </div>
         </section>
 
-        <section class="quick-generators">
-            <h2>Quick Generators</h2>
+        <section class="generator-section">
+            <h2>AI Generators</h2>
             <div class="generator-grid">
                 <a href="text-gen.html" class="generator-card">
-                    <img src="assets/icons/text-gen.svg" alt="Text Generation">
-                    <h3>Text Generation</h3>
+                    <div class="card-icon">
+                        <img src="assets/icons/text-gen.svg" alt="Text Generation">
+                    </div>
+                    <h3>Text Generator</h3>
+                    <p>Create articles, stories, summaries and more</p>
+                    <div class="recent-history" id="text-history-preview"></div>
                 </a>
+                
                 <a href="image-gen.html" class="generator-card">
-                    <img src="assets/icons/image-gen.svg" alt="Image Generation">
-                    <h3>Image Generation</h3>
+                    <div class="card-icon">
+                        <img src="assets/icons/image-gen.svg" alt="Image Generation">
+                    </div>
+                    <h3>Image Generator</h3>
+                    <p>Generate stunning AI artwork from text prompts</p>
+                    <div class="recent-history" id="image-history-preview"></div>
                 </a>
+                
                 <a href="code-gen.html" class="generator-card">
-                    <img src="assets/icons/code-gen.svg" alt="Code Generation">
-                    <h3>Code Generation</h3>
+                    <div class="card-icon">
+                        <img src="assets/icons/code-gen.svg" alt="Code Generation">
+                    </div>
+                    <h3>Code Generator</h3>
+                    <p>Write, explain, and debug code in any language</p>
+                    <div class="recent-history" id="code-history-preview"></div>
                 </a>
             </div>
         </section>
     </main>
 
     <footer>
-        <div class="footer-links">
-            <a href="privacy.html">Privacy Policy</a>
-            <a href="about.html">About Us</a>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="privacy.html">Privacy Policy</a>
+                <a href="about.html">About Us</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="social-links">
+                <a href="#"><img src="assets/icons/github.svg" alt="GitHub"></a>
+                <a href="#"><img src="assets/icons/twitter.svg" alt="Twitter"></a>
+                <a href="#"><img src="assets/icons/discord.svg" alt="Discord"></a>
+            </div>
+            <p>© 2023 Wayne-AI. All rights reserved.</p>
         </div>
-        <p>© 2023 Wayne-AI. All rights reserved.</p>
     </footer>
 
+    <script src="js/env.js"></script>
     <script src="js/main.js"></script>
     <script src="js/gemini.js"></script>
+    <script src="js/dashboard.js"></script>
 </body>
 </html>
