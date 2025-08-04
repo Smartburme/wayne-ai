@@ -5,138 +5,58 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wayne-AI | Dashboard</title>
     <link rel="stylesheet" href="../css/main.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="../assets/images/ai-logo.png">
 </head>
-<body>
+<body class="nero-theme">
     <div class="app-container">
-        <!-- Header -->
         <header class="app-header">
             <div class="header-left">
-                <img src="../assets/images/ai-logo.png" alt="Wayne-AI Logo" class="logo">
+                <img src="../assets/images/ai-logo.png" alt="AI Logo" class="header-logo">
                 <h1>Wayne-AI</h1>
             </div>
             <div class="header-right">
-                <button id="theme-toggle" class="btn-icon" title="Toggle Theme">
-                    <i class="fas fa-moon"></i>
+                <button id="theme-toggle" class="icon-btn">
+                    <img src="../assets/images/gen-icon.png" alt="Theme Toggle">
                 </button>
             </div>
         </header>
 
-        <!-- Main Content -->
-        <main class="content-area">
-            <!-- Chat Section -->
-            <section class="chat-section">
-                <div class="chat-container">
-                    <div id="chat-messages" class="chat-messages">
-                        <div class="welcome-message">
-                            <img src="../assets/images/ai-logo.png" alt="Wayne-AI" class="bot-avatar">
-                            <div class="message-content">
-                                <h3>Welcome to Wayne-AI</h3>
-                                <p>I'm your AI assistant. How can I help you today?</p>
-                                <div class="quick-prompts">
-                                    <button class="quick-prompt">Explain quantum computing</button>
-                                    <button class="quick-prompt">Generate Python code</button>
-                                    <button class="quick-prompt">Create a marketing plan</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="chat-input">
-                        <button id="attach-file" class="btn-icon" title="Attach File">
-                            <i class="fas fa-paperclip"></i>
-                        </button>
-                        <textarea id="user-input" placeholder="Type your message here..." rows="1"></textarea>
-                        <button id="send-message" class="btn-icon primary" title="Send">
-                            <i class="fas fa-paper-plane"></i>
-                        </button>
-                    </div>
+        <main class="main-content">
+            <div class="dashboard-grid">
+                <div class="dashboard-card" onclick="location.href='chat-bot.html'">
+                    <img src="../assets/images/send-icon.png" alt="Chat">
+                    <h3>AI Chat</h3>
                 </div>
-            </section>
-
-            <!-- Generator Panel -->
-            <aside class="generator-panel">
-                <div class="generator-header">
-                    <h3>AI Generators</h3>
-                    <button id="toggle-generator" class="btn-icon">
-                        <i class="fas fa-chevron-down"></i>
-                    </button>
+                <div class="dashboard-card" onclick="location.href='text-gen.html'">
+                    <img src="../assets/images/text-icon.png" alt="Text Generation">
+                    <h3>Text Generation</h3>
                 </div>
-                <div class="generator-options">
-                    <button class="generator-option" onclick="navigateTo('text-gen')">
-                        <img src="../assets/images/text-icon.png" alt="Text">
-                        <span>Text Generator</span>
-                    </button>
-                    <button class="generator-option" onclick="navigateTo('image-gen')">
-                        <img src="../assets/images/image-icon.png" alt="Image">
-                        <span>Image Generator</span>
-                    </button>
-                    <button class="generator-option" onclick="navigateTo('code-gen')">
-                        <img src="../assets/images/code-icon.png" alt="Code">
-                        <span>Code Generator</span>
-                    </button>
+                <div class="dashboard-card" onclick="location.href='image-gen.html'">
+                    <img src="../assets/images/image-icon.png" alt="Image Generation">
+                    <h3>Image Generation</h3>
                 </div>
-            </aside>
+                <div class="dashboard-card" onclick="location.href='code-gen.html'">
+                    <img src="../assets/images/code-icon.png" alt="Code Generation">
+                    <h3>Code Generation</h3>
+                </div>
+            </div>
         </main>
 
-        <!-- Bottom Navigation -->
         <nav class="bottom-nav">
-            <button class="nav-btn active" data-target="chat">
-                <i class="fas fa-comment-dots"></i>
+            <button class="nav-btn active" onclick="location.href='main.html'">
+                <img src="../assets/images/gen-icon.png" alt="Dashboard">
+                <span>Home</span>
+            </button>
+            <button class="nav-btn" onclick="location.href='chat-bot.html'">
+                <img src="../assets/images/send-icon.png" alt="Chat">
                 <span>Chat</span>
             </button>
-            <button class="nav-btn" data-target="dashboard">
-                <i class="fas fa-chart-line"></i>
-                <span>Dashboard</span>
-            </button>
-            <button class="nav-btn" data-target="settings">
-                <i class="fas fa-cog"></i>
+            <button class="nav-btn" onclick="location.href='setting.html'">
+                <img src="../assets/images/clear-icon.png" alt="Settings">
                 <span>Settings</span>
             </button>
         </nav>
-
-        <!-- Settings Panel -->
-        <div id="settings-panel" class="settings-panel">
-            <div class="settings-header">
-                <h3>Settings</h3>
-                <button id="close-settings" class="btn-icon">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="settings-content">
-                <div class="setting-group">
-                    <h4>AI Model</h4>
-                    <select id="ai-model">
-                        <option value="gemini-pro">Gemini Pro</option>
-                        <option value="gpt-4">GPT-4</option>
-                        <option value="claude-2">Claude 2</option>
-                    </select>
-                </div>
-                <div class="setting-group">
-                    <h4>Theme</h4>
-                    <div class="theme-options">
-                        <button data-theme="light" class="theme-option">
-                            <i class="fas fa-sun"></i> Light
-                        </button>
-                        <button data-theme="dark" class="theme-option active">
-                            <i class="fas fa-moon"></i> Dark
-                        </button>
-                        <button data-theme="system" class="theme-option">
-                            <i class="fas fa-desktop"></i> System
-                        </button>
-                    </div>
-                </div>
-                <div class="setting-group">
-                    <h4>Chat History</h4>
-                    <button id="clear-history" class="btn-secondary">
-                        <i class="fas fa-trash"></i> Clear Chat History
-                    </button>
-                </div>
-            </div>
-        </div>
     </div>
-
     <script src="../js/main.js"></script>
-    <script src="../js/api.js"></script>
 </body>
 </html>
