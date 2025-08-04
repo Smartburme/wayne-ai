@@ -1,227 +1,315 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // DOM Elements
-    const chatContainer = document.getElementById('chatContainer');
-    const userInput = document.getElementById('userInput');
-    const sendBtn = document.getElementById('sendBtn');
-    const newChatBtn = document.getElementById('newChatBtn');
-    const clearHistoryBtn = document.getElementById('clearHistoryBtn');
-    const chatHistoryList = document.getElementById('chatHistoryList');
-    const generateHistoryList = document.getElementById('generateHistoryList');
-    const historySidebar = document.getElementById('historySidebar');
-    
-    // Chat state
-    let currentChatId = generateChatId();
-    let chats = loadChats();
-    let currentChat = getCurrentChat();
-    
-    // Initialize the UI
-    renderChatHistory();
-    renderCurrentChat();
-    
-    // Event Listeners
-    sendBtn.addEventListener('click', sendMessage);
-    userInput.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') sendMessage();
+// DOM Elements
+const chatMessages = document.getElementById('chat-messages');
+const userInput = document.getElementById('user-input');
+const sendButton = document.getElementById('send-message');
+const attachButton = document.getElementById('attach-file');
+const quickPrompts = document.querySelectorAll('.quick-prompt');
+const toggleGenerator = document.getElementById('toggle-generator');
+const generatorPanel = document.querySelector('.generator-panel');
+const navButtons = document.querySelectorAll('.nav-btn');
+const settingsButton = document.querySelector('[data-target="settings"]');
+const settingsPanel = document.getElementById('settings-panel');
+const closeSettings = document.getElementById('close-settings');
+const themeToggle = document.getElementById('theme-toggle');
+const themeOptions = document.querySelectorAll('.theme-option');
+const clearHistoryButton = document.getElementById('clear-history');
+const aiModelSelect = document.getElementById('ai-model');
+
+// State Management
+let currentTheme = 'dark';
+let currentModel = 'gemini-pro';
+let chatHistory = [];
+
+// Initialize the app
+function init() {
+    loadSettings();
+    setupEventListeners();
+    adjustTextareaHeight();
+    checkSystemTheme();
+}
+
+// Event Listeners
+function setupEventListeners() {
+    // Chat functionality
+    sendButton.addEventListener('click', sendMessage);
+    userInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            sendMessage();
+        }
     });
     
-    newChatBtn.addEventListener('click', startNewChat);
-    clearHistoryBtn.addEventListener('click', clearChatHistory);
+    // Textarea auto-resize
+    userInput.addEventListener('input', adjustTextareaHeight);
     
-    // Functions
-    function sendMessage() {
-        const message = userInput.value.trim();
-        if (!message) return;
-        
-        // Add user message to chat
-        addMessageToChat('user', message);
-        userInput.value = '';
-        
-        // Simulate bot response (in a real app, this would be an API call)
-        setTimeout(() => {
-            const botResponse = generateBotResponse(message);
-            addMessageToChat('bot', botResponse);
-            
-            // Update history
-            updateChatHistory();
-        }, 1000);
-    }
-    
-    function addMessageToChat(sender, message) {
-        const timestamp = new Date().toISOString();
-        currentChat.messages.push({
-            sender,
-            message,
-            timestamp
+    // Quick prompts
+    quickPrompts.forEach(prompt => {
+        prompt.addEventListener('click', () => {
+            userInput.value = prompt.textContent;
+            adjustTextareaHeight();
+            userInput.focus();
         });
-        
-        saveChats();
-        renderCurrentChat();
-    }
+    });
     
-    function renderCurrentChat() {
-        chatContainer.innerHTML = '';
+    // Generator panel toggle
+    toggleGenerator.addEventListener('click', () => {
+        generatorPanel.classList.toggle('open');
+        const icon = toggleGenerator.querySelector('i');
+        if (generatorPanel.classList.contains('open')) {
+            icon.classList.remove('fa-chevron-down');
+            icon.classList.add('fa-chevron-up');
+        } else {
+            icon.classList.remove('fa-chevron-up');
+            icon.classList.add('fa-chevron-down');
+        }
+    });
+    
+    // Navigation
+    navButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            navButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            
+            if (button.dataset.target === 'settings') {
+                settingsPanel.classList.add('open');
+            } else {
+                settingsPanel.classList.remove('open');
+            }
+        });
+    });
+    
+    // Settings panel
+    closeSettings.addEventListener('click', () => {
+        settingsPanel.classList.remove('open');
+        document.querySelector('[data-target="chat"]').classList.add('active');
+    });
+    
+    // Theme toggle
+    themeToggle.addEventListener('click', toggleTheme);
+    
+    // Theme options
+    themeOptions.forEach(option => {
+        option.addEventListener('click', () => {
+            themeOptions.forEach(opt => opt.classList.remove('active'));
+            option.classList.add('active');
+            currentTheme = option.dataset.theme;
+            applyTheme(currentTheme);
+            saveSettings();
+        });
+    });
+    
+    // Clear history
+    clearHistoryButton.addEventListener('click', clearChatHistory);
+    
+    // Model selection
+    aiModelSelect.addEventListener('change', (e) => {
+        currentModel = e.target.value;
+        saveSettings();
+    });
+    
+    // Handle system theme changes
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+        if (currentTheme === 'system') {
+            applyTheme(e.matches ? 'dark' : 'light');
+        }
+    });
+}
+
+// Chat Functions
+function sendMessage() {
+    const message = userInput.value.trim();
+    if (!message) return;
+    
+    // Add user message to chat
+    addMessage('user', message);
+    userInput.value = '';
+    adjustTextareaHeight();
+    
+    // Show typing indicator
+    showTypingIndicator();
+    
+    // Simulate AI response after a delay
+    setTimeout(() => {
+        removeTypingIndicator();
+        generateAIResponse(message);
+    }, 1500);
+}
+
+function addMessage(role, content) {
+    const messageElement = document.createElement('div');
+    messageElement.classList.add('message', `message-${role}`);
+    
+    const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    
+    messageElement.innerHTML = `
+        <div class="message-avatar">
+            ${role === 'user' ? '<i class="fas fa-user"></i>' : '<img src="../assets/images/ai-logo.png" alt="AI">'}
+        </div>
+        <div class="message-content">
+            <div class="message-text">${content}</div>
+            <div class="message-time">${timestamp}</div>
+        </div>
+    `;
+    
+    chatMessages.appendChild(messageElement);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+    
+    // Add to chat history
+    chatHistory.push({ role, content, timestamp });
+}
+
+function showTypingIndicator() {
+    const typingElement = document.createElement('div');
+    typingElement.classList.add('typing-indicator');
+    typingElement.id = 'typing-indicator';
+    typingElement.innerHTML = `
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+    `;
+    chatMessages.appendChild(typingElement);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function removeTypingIndicator() {
+    const typingElement = document.getElementById('typing-indicator');
+    if (typingElement) {
+        typingElement.remove();
+    }
+}
+
+async function generateAIResponse(prompt) {
+    try {
+        let response;
         
-        if (currentChat.messages.length === 0) {
-            // Show welcome message if no messages
-            chatContainer.innerHTML = `
-                <div class="chat-message bot-message">
-                    <div class="message-content">
-                        <div class="message-text">
-                            <h2>Welcome to Wayne-AI!</h2>
-                            <p>I'm your AI assistant. How can I help you today?</p>
-                        </div>
-                        <div class="message-time">Just now</div>
-                    </div>
-                </div>
-            `;
-            return;
+        switch (currentModel) {
+            case 'gemini-pro':
+                response = await generateText(prompt, currentModel);
+                break;
+            case 'gpt-4':
+                response = await generateText(prompt, currentModel);
+                break;
+            case 'claude-2':
+                response = await generateText(prompt, currentModel);
+                break;
+            default:
+                response = "I'm not sure how to respond to that.";
         }
         
-        currentChat.messages.forEach(msg => {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `chat-message ${msg.sender}-message`;
-            
-            messageDiv.innerHTML = `
-                <div class="message-content">
-                    <div class="message-text">${msg.message}</div>
-                    <div class="message-time">${formatTime(msg.timestamp)}</div>
-                </div>
-            `;
-            
-            chatContainer.appendChild(messageDiv);
-        });
-        
-        // Scroll to bottom
-        chatContainer.scrollTop = chatContainer.scrollHeight;
+        addMessage('bot', response);
+    } catch (error) {
+        addMessage('bot', `Sorry, I encountered an error: ${error.message}`);
+        console.error('AI Response Error:', error);
     }
+}
+
+// UI Functions
+function adjustTextareaHeight() {
+    userInput.style.height = 'auto';
+    userInput.style.height = `${Math.min(userInput.scrollHeight, 150)}px`;
+}
+
+function toggleTheme() {
+    currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    applyTheme(currentTheme);
+    saveSettings();
     
-    function startNewChat() {
-        // Save current chat if not empty
-        if (currentChat.messages.length > 0) {
-            currentChatId = generateChatId();
-            currentChat = {
-                id: currentChatId,
-                title: 'New Chat',
-                messages: [],
-                createdAt: new Date().toISOString(),
-                updatedAt: new Date().toISOString()
-            };
-            chats.push(currentChat);
-            saveChats();
+    // Update theme options
+    themeOptions.forEach(option => {
+        option.classList.remove('active');
+        if (option.dataset.theme === currentTheme) {
+            option.classList.add('active');
         }
-        
-        renderCurrentChat();
-        renderChatHistory();
-    }
+    });
+}
+
+function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
     
-    function renderChatHistory() {
-        chatHistoryList.innerHTML = '';
+    // Update theme toggle icon
+    const icon = themeToggle.querySelector('i');
+    icon.classList.remove('fa-moon', 'fa-sun');
+    icon.classList.add(theme === 'dark' ? 'fa-moon' : 'fa-sun');
+}
+
+function checkSystemTheme() {
+    if (currentTheme === 'system') {
+        const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        applyTheme(systemTheme);
+    }
+}
+
+// Settings Functions
+function saveSettings() {
+    const settings = {
+        theme: currentTheme,
+        model: currentModel,
+        history: chatHistory
+    };
+    localStorage.setItem('wayne-ai-settings', JSON.stringify(settings));
+}
+
+function loadSettings() {
+    const savedSettings = localStorage.getItem('wayne-ai-settings');
+    if (savedSettings) {
+        const settings = JSON.parse(savedSettings);
+        currentTheme = settings.theme || 'dark';
+        currentModel = settings.model || 'gemini-pro';
+        chatHistory = settings.history || [];
         
-        chats.forEach(chat => {
-            const lastMessage = chat.messages[chat.messages.length - 1];
-            const preview = lastMessage ? 
-                lastMessage.message.substring(0, 30) + (lastMessage.message.length > 30 ? '...' : '') : 
-                'New Chat';
-            
-            const historyItem = document.createElement('div');
-            historyItem.className = `history-item ${chat.id === currentChatId ? 'active' : ''}`;
-            historyItem.innerHTML = `
-                <div class="history-preview">${preview}</div>
-                <div class="history-time">${formatTime(chat.updatedAt)}</div>
-            `;
-            
-            historyItem.addEventListener('click', () => {
-                currentChatId = chat.id;
-                currentChat = chat;
-                renderCurrentChat();
-                renderChatHistory();
+        // Apply loaded settings
+        applyTheme(currentTheme);
+        aiModelSelect.value = currentModel;
+        
+        // Restore chat history
+        if (chatHistory.length > 0) {
+            chatHistory.forEach(msg => {
+                addMessage(msg.role, msg.content);
             });
-            
-            chatHistoryList.appendChild(historyItem);
+        }
+        
+        // Set active theme option
+        themeOptions.forEach(option => {
+            option.classList.remove('active');
+            if (option.dataset.theme === currentTheme) {
+                option.classList.add('active');
+            }
         });
     }
+}
+
+function clearChatHistory() {
+    chatMessages.innerHTML = `
+        <div class="welcome-message">
+            <img src="../assets/images/ai-logo.png" alt="Wayne-AI" class="bot-avatar">
+            <div class="message-content">
+                <h3>Welcome to Wayne-AI</h3>
+                <p>I'm your AI assistant. How can I help you today?</p>
+                <div class="quick-prompts">
+                    <button class="quick-prompt">Explain quantum computing</button>
+                    <button class="quick-prompt">Generate Python code</button>
+                    <button class="quick-prompt">Create a marketing plan</button>
+                </div>
+            </div>
+        </div>
+    `;
+    chatHistory = [];
+    saveSettings();
     
-    function clearChatHistory() {
-        if (confirm('Are you sure you want to clear all chat history?')) {
-            chats = [];
-            currentChatId = generateChatId();
-            currentChat = {
-                id: currentChatId,
-                title: 'New Chat',
-                messages: [],
-                createdAt: new Date().toISOString(),
-                updatedAt: new Date().toISOString()
-            };
-            saveChats();
-            renderChatHistory();
-            renderCurrentChat();
-        }
-    }
-    
-    function updateChatHistory() {
-        const chatIndex = chats.findIndex(chat => chat.id === currentChatId);
-        if (chatIndex !== -1) {
-            chats[chatIndex] = currentChat;
-            saveChats();
-            renderChatHistory();
-        }
-    }
-    
-    // Helper functions
-    function generateChatId() {
-        return Date.now().toString();
-    }
-    
-    function formatTime(timestamp) {
-        const date = new Date(timestamp);
-        return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    }
-    
-    function generateBotResponse(userMessage) {
-        // This is a simplified response generator
-        // In a real app, you would call your AI API here
-        const responses = [
-            `I understand you're asking about "${userMessage}". Can you provide more details?`,
-            `Interesting question about "${userMessage}". Here's what I know...`,
-            `Regarding "${userMessage}", I can help with that.`,
-            `Thanks for your message about "${userMessage}". Let me think about that.`
-        ];
-        
-        return responses[Math.floor(Math.random() * responses.length)];
-    }
-    
-    // Data persistence functions
-    function loadChats() {
-        const savedChats = localStorage.getItem('wayneAIChats');
-        if (savedChats) {
-            return JSON.parse(savedChats);
-        }
-        return [{
-            id: currentChatId,
-            title: 'Welcome Chat',
-            messages: [],
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString()
-        }];
-    }
-    
-    function getCurrentChat() {
-        const chat = chats.find(chat => chat.id === currentChatId);
-        if (chat) return chat;
-        
-        // If not found, create new
-        const newChat = {
-            id: currentChatId,
-            title: 'New Chat',
-            messages: [],
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString()
-        };
-        chats.push(newChat);
-        return newChat;
-    }
-    
-    function saveChats() {
-        localStorage.setItem('wayneAIChats', JSON.stringify(chats));
-    }
-});
+    // Reattach event listeners to quick prompts
+    document.querySelectorAll('.quick-prompt').forEach(prompt => {
+        prompt.addEventListener('click', () => {
+            userInput.value = prompt.textContent;
+            adjustTextareaHeight();
+            userInput.focus();
+        });
+    });
+}
+
+// Navigation
+function navigateTo(page) {
+    window.location.href = `${page}.html`;
+}
+
+// Initialize the app
+document.addEventListener('DOMContentLoaded', init);
